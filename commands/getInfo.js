@@ -1,0 +1,27 @@
+const {MessageEmbed} = require('discord.js')
+const {Configuration} = require('../schemas/Configuration')
+module.exports.run = async (bot, message, args) => {
+    if(!args[0]) return message.channel.send("Укажи id")
+    const config = await Configuration.findOne({ID: args[0]}).lean(true)
+    if (!config) {
+        const noConfig = new MessageEmbed()
+            .setTitle("Ошибка").setDescription("Такого конфига нет в базе бота")
+        return message.channel.send(noConfig)
+    }
+    const infoEmbed = new MessageEmbed()
+        .setTitle(config.name)
+        .setDescription(config.description)
+        .setAuthor(config.author)
+        .addField("Цена", config.price, true)
+        .addField("Процессор", `${config.CPU.model}\nЦена: ${config.CPU.price}`, true)
+        .addField("Видеокарта", `${config.GPU.model}\nЦена: ${config.GPU.price}`, true)
+        .addField("Корпус", `${config.body.model}\nЦена: ${config.body.price}`, true)
+        .addField("Кулер", `${config.cooler.model}\nЦена: ${config.cooler.price}`, true)
+        .addField("Блок питания", `${config.PSU.model}\nЦена: ${config.PSU.price}`, true)
+        .addField("HDD", `TBD`, true)
+        .addField("SSD", `TBD`, true)
+        .addField("M2", `TBD`, true)
+        .addField("Материнская плата", `${config.motherboard.model}\nЦена: ${config.motherboard.price}`, true)
+        .addField("Оперативная память", `${config.RAM.model}\nЦена: ${config.RAM.price}\nКит: ${config.RAM.kit}\nКол-во: ${config.RAM.count}`, true)
+    message.channel.send(infoEmbed)
+}
