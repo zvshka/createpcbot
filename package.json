@@ -1,0 +1,19 @@
+{
+  "name": "createpcbot-classed",
+  "version": "1.0.0",
+  "description": "Createpc Bot built on classes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zvshka/createpcbot.git"
+  },
+  "author": "zvshka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zvshka/createpcbot/issues"
+  },
+  "homepage": "https://github.com/zvshka/createpcbot#readme"
+}
