@@ -42,7 +42,7 @@ class Handler {
         this.events = new Map();
 
 
-        this.prefix = ".."
+        this.prefix = "."
     }
 
     /**
