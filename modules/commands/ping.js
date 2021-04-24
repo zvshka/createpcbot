@@ -13,6 +13,7 @@ module.exports = class extends Command {
         });
     }
 
+
     async run(message) {
         const msg = await message.channel.send('Pinging...');
         const ping = Math.round(msg.createdTimestamp - message.createdTimestamp);
