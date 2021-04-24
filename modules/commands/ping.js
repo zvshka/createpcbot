@@ -6,7 +6,7 @@ module.exports = class extends Command {
     constructor() {
         super('ping', {
             aliases: ['pong'],
-            info: 'Get the ping of the bot',
+            info: 'Пинг и латенси бота',
             usage: 'ping',
             guildOnly: false,
             adminOnly: false

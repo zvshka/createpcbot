@@ -43,12 +43,13 @@ module.exports = class extends Command {
             }
 
             description = `
-        **Name:** ${command.name}
-        **Usage:** ${prefix}${command.usage}
-        **Info:** ${command.info}
-        **Aliases:** ${command.aliases.join(', ')}
-        **Guild Only:** ${Utils.boolToString(command.guildOnly)}
-        **Enabled:** ${Utils.boolToString(command.isEnabled)}
+        **Название:** ${command.name}
+        **Как использовать:** ${prefix}${command.usage}
+        **Информация:** ${command.info}
+        **Алиасы:** ${command.aliases.join(', ')}
+        **Только на сервере:** ${Utils.boolToString(command.guildOnly)}
+        **Только для админов:** ${Utils.boolToString(command.adminOnly)}
+        **Включена:** ${Utils.boolToString(command.isEnabled)}
             `;
         }
 

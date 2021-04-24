@@ -16,7 +16,7 @@ module.exports = class extends Event {
         if (ref.content.length < 1) return message.channel.send("Лэээ, текст дай")
         const textCanvas = createCanvas(1000, 500)
         const textCtx = textCanvas.getContext('2d')
-        const member = await message.guild.members.fetch(ref.author.id).catch(e => {})
+        const member = await message.guild.members.fetch(ref.author.id).catch(_ => {})
         const name = member ? member.displayName : ref.author.username
 
         const text = "«" + ref.content + "»."
@@ -74,6 +74,13 @@ module.exports = class extends Event {
         return ctx.font;
     }
 
+    /**
+     * @param {String} text
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Number} maxWidth
+     * @param {String} font
+     * @returns Array<String>
+     * */
     getLines(ctx, text, maxWidth, font) {
         const words = text.split(" ");
         const lines = [];
