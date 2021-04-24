@@ -1,9 +1,9 @@
-const {Client} = require('discord.js');
-
 const Feature = require('./Feature.js');
 const Command = require('./Command.js');
 const Event = require('./Event.js');
 const Utils = require('../Utils.js');
+
+const {Client, MessageEmbed} = require('discord.js');
 
 class Handler {
     /**
@@ -196,16 +196,36 @@ class Handler {
                 return;
             }
 
-            if (cmd.guildOnly && !message.guild) {
-                await message.channel.send('Эта команда доступна только на сервере');
+            if (cmd.adminOnly && message.author.id !== "263349725099458566" && (message.channel.type === "dm" || !message.member.permissions.has("ADMINISTRATOR"))) {
+                const embed = new MessageEmbed()
+                    .setTitle("Ошибка")
+                    .setColor("RED")
+                    .setDescription("Команда доступна только на сервере")
+                message.reply(embed);
                 return;
             }
+
+
+            if (cmd.guildOnly && !message.guild) {
+                const embed = new MessageEmbed()
+                    .setTitle("Ошибка")
+                    .setColor("RED")
+                    .setDescription("Команда доступна только на сервере")
+                message.reply(embed);
+                return;
+            }
+
+
 
             try {
                 await cmd.run(message, args);
             } catch (err) {
                 console.error(err);
-                message.reply('bleep bloop an error occured :C');
+                const embed = new MessageEmbed()
+                    .setTitle("Ошибка")
+                    .setColor("RED")
+                    .setDescription("Ты чё наделал блять?")
+                message.reply(embed);
             }
         });
     }

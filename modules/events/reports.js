@@ -21,6 +21,9 @@ module.exports = class extends Event {
 
         if (result) {
             const list = reports.data.list || []
+            /**
+             * @type {TextChannel}
+             */
             const reportChannel = await bot.channels.fetch("833058424928993290")
             const messages = await reportChannel.messages.fetch()
             const embeds = messages
@@ -43,6 +46,7 @@ module.exports = class extends Event {
                     **Название сборки:** ${report.name_config}
                     **Описание сборки:** ${report.description_config}
                 ` : `
+                    **ID сообщения:** ${report.id_message}
                     **Текст сообщения виновного:** ${report.text_message}
                 `}`)
                     .setFooter(report.ID)
