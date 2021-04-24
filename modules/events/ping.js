@@ -15,7 +15,6 @@ module.exports = class extends Event {
         super('message');
     }
 
-
     async run(client, message) {
         const text = answers[Math.floor(Math.random() * answers.length)]
         if (message.mentions.has(client.user.id)) {
