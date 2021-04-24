@@ -11,6 +11,6 @@ module.exports = class extends Event {
         app.get("/", (req, res) => {
             res.send("OK")
         })
-        app.listen(80)
+        app.listen(3000)
     }
 };
