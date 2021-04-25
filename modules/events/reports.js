@@ -37,18 +37,20 @@ module.exports = class extends Event {
                 const embed = new MessageEmbed()
                     .setTitle("Репорт №" + report.ID)
                     .setDescription(`
-                **Тип:** `${report.Type === "config" ? "Сборка" : "Сообщение"}`
-                **Виновник:** `${report.name_intruder}`
-                **Отправитель:** `${report.name_user}`
-                **Сообщение:** `${report.message_warn}`
+                **Тип:** \`${report.Type === "config" ? "Сборка" : "Сообщение"}\`
+                **Виновник:** \`${report.name_intruder}\`
+                **Отправитель:** \`${report.name_user}\`
+                **Сообщение:** \`${report.message_warn}\`
+                
                 ${report.Type === "config" ? `
-                    **ID Сборки:** `${report.ID_config}`
-                    **Название сборки:** `${report.name_config}`
-                    **Описание сборки:** `${report.description_config}`
+                    **ID Сборки:** \`${report.ID_config}\`
+                    **Название сборки:** \`${report.name_config}\`
+                    **Описание сборки:** \`${report.description_config}\`
                 ` : `
-                    **ID сообщения:** `${report.id_message}`
-                    **Текст сообщения виновного:** `${report.text_message}`
-                `}`)
+                    **ID сообщения:** \`${report.id_message}\`
+                    **Текст сообщения виновного:** \`${report.text_message}\`
+                `}
+                `)
                     .setFooter(report.ID)
                 await reportChannel.send(embed)
             }
