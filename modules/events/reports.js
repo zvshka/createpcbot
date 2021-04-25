@@ -37,7 +37,7 @@ module.exports = class extends Event {
                 const embed = new MessageEmbed()
                     .setTitle("Репорт №" + report.ID)
                     .setDescription(`
-                **Тип:** \`${report.Type === "config" ? "Сборка" : "Сообщение"}\`
+                **Тип:** `${report.Type === "config" ? "Сборка" : "Сообщение"}`
                 **Виновник:** `${report.name_intruder}`
                 **Отправитель:** `${report.name_user}`
                 **Сообщение:** `${report.message_warn}`
