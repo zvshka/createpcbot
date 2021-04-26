@@ -59,7 +59,7 @@ module.exports = class extends Event {
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'cit.png');
         await message.channel.send(attachment).then(() => {
-            console.log(`[LOG] ${message.author.id} использовал цитату на сообщение ${ref.content} пользователя ${name}`)
+            console.log(`[LOG] ${message.author.tag} использовал цитату на сообщение ${ref.content} пользователя ${name}`)
         });
     }
 
