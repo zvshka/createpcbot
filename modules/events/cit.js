@@ -58,7 +58,9 @@ module.exports = class extends Event {
         ctx.drawImage(avatar, 60, avatarY, 150, 150)
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'cit.png');
-        await message.channel.send(attachment);
+        await message.channel.send(attachment).then(() => {
+            console.log(`[LOG] ${message.author.id} использовал цитату на сообщение ${ref.content} пользователя ${name}`)
+        });
     }
 
     applyText(canvas, text, font = '"Google Sans Regular"', fontSize = 50) {

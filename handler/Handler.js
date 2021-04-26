@@ -1,19 +1,20 @@
+const {MessageEmbed} = require('discord.js');
+const typing = require('discord.js')
+
 const Feature = require('./Feature.js');
 const Command = require('./Command.js');
 const Event = require('./Event.js');
 const Utils = require('../Utils.js');
 
-const {Client, MessageEmbed} = require('discord.js');
-
 class Handler {
     /**
      * @description Create a new handler instance
-     * @param {Client} client - The discord.js client
+     * @param {typing.Client} client - The discord.js client
      */
     constructor(client) {
         /**
          * The discord.js client
-         * @type {Client}
+         * @type {typing.Client}
          */
         this.client = client;
 
@@ -201,7 +202,7 @@ class Handler {
                     .setTitle("Ошибка")
                     .setColor("RED")
                     .setDescription("Команда доступна только на сервере")
-                message.reply(embed);
+                await message.reply(embed);
                 return;
             }
 
@@ -211,7 +212,7 @@ class Handler {
                     .setTitle("Ошибка")
                     .setColor("RED")
                     .setDescription("Команда доступна только на сервере")
-                message.reply(embed);
+                await message.reply(embed);
                 return;
             }
 
@@ -219,13 +220,20 @@ class Handler {
 
             try {
                 await cmd.run(message, args);
+                console.log(`[LOG] ${message.author.tag} использовал ${cmd.name}`)
             } catch (err) {
-                console.error(err);
+                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)
                 const embed = new MessageEmbed()
                     .setTitle("Ошибка")
                     .setColor("RED")
                     .setDescription("Ты чё наделал блять?")
-                message.reply(embed);
+                await message.reply(embed);
+                /**
+                 * @type {Guild}
+                 */
+                const guild = await this.client.guilds.fetch("725786415438364692")
+                const channel = await guild.channels.cache.get("836263032702107749")
+                channel.send(`Плохой человек с тегом ${message.author.tag} создал ошибку в команде \`${cmd.name}\`, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)
             }
         });
     }

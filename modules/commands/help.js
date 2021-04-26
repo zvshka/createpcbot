@@ -6,7 +6,7 @@ module.exports = class extends Command {
     constructor({commandHandler}) {
         super('help', {
             aliases: ['h', 'commands', 'cmds'],
-            info: 'Show all the commands or info about a specific command.',
+            info: 'Список команд или подробности о команде',
             usage: 'help [command]',
             guildOnly: false,
             adminOnly: false
@@ -35,8 +35,9 @@ module.exports = class extends Command {
 
             if (!command) {
                 const embed = new MessageEmbed()
-                    .setTitle('Something went wrong!')
-                    .setDescription('Invalid command provided, please try again!');
+                    .setTitle('Что-то пошло не так!')
+                    .setColor("RED")
+                    .setDescription('Введена не правильная команда, попробуй ещё!');
 
                 return message.channel.send(embed);
 
@@ -54,9 +55,9 @@ module.exports = class extends Command {
         }
 
         const embed = new MessageEmbed()
-            .setTitle('Need help? Here are you go!')
+            .setTitle('Нужна помощь? Получи!')
             .setDescription(
-                `${description}\n(**[]** is optional, **<>** is required)`,
+                `${description}\n(**[]** не обязательно, **<>** обязательно)`,
             );
 
         await message.channel.send(embed);
