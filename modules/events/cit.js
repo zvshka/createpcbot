@@ -33,14 +33,15 @@ module.exports = class extends Event {
 
         // Фон
         ctx.textBaseline = "top"
-        ctx.fillStyle = `rgb(0, 0, 0)`
-        ctx.fillRect(0, 0, width, height)
 
         if (message.attachments.size > 0) {
             const image = await loadImage(message.attachments.first().attachment)
             ctx.globalAlpha = 0.65;
             ctx.drawImage(image, 0, 0, width, height)
             ctx.globalAlpha = 1
+        } else {
+            ctx.fillStyle = `rgb(0, 0, 0)`
+            ctx.fillRect(0, 0, width, height)
         }
 
         ctx.fillStyle = '#ffffff';
