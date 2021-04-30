@@ -43,7 +43,7 @@ class Handler {
         this.events = new Map();
 
 
-        this.prefix = "."
+        this.prefix = process.env.DEV ? ".." : "."
     }
 
     /**
@@ -201,7 +201,7 @@ class Handler {
                 const embed = new MessageEmbed()
                     .setTitle("Ошибка")
                     .setColor("RED")
-                    .setDescription("Команда доступна только на сервере")
+                    .setDescription("Команда доступна только админам")
                 await message.reply(embed);
                 return;
             }

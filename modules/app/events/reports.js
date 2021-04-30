@@ -1,10 +1,11 @@
 const axios = require("axios");
 const {MessageEmbed} = require("discord.js");
-const {Event} = require('../../handler');
+const {Event} = require('../../../handler');
 
 module.exports = class extends Event {
-    constructor() {
+    constructor({fetch}) {
         super('ready');
+        this.fetch = fetch
     }
 
     async run(client) {
@@ -15,12 +16,13 @@ module.exports = class extends Event {
     }
 
     async post(bot) {
-        const reports = await axios.post(process.env.baseURL + "/getListUsers_warn.php", `login=zvshka&password=1234eszxcv`)
+        const reports = await this.fetch("/getListUsers_warn.php", {
+            login: "zvshka",
+            password: "1234eszxcv"
+        })
 
-        const result = reports.data.RESULT === "true"
-
-        if (result) {
-            const list = reports.data.list || []
+        if (reports.status) {
+            const list = reports.list
             /**
              * @type {TextChannel}
              */

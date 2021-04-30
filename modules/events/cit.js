@@ -32,12 +32,16 @@ module.exports = class extends Event {
         ctx.fillStyle = `rgb(0, 0, 0)`
         ctx.fillRect(0, 0, width, height)
 
+        if (message.attachments.size > 0) {
+            const image = await loadImage(message.attachments.first().attachment)
+            ctx.drawImage(image, 0, 0, width, height)
+        }
+
         ctx.fillStyle = '#ffffff';
         ctx.font = '52px "Google Sans Regular"';
         ctx.fillText("Цитаты великих людей", 215, 35);
 
         ctx.font = '52px "Google Sans Italic"'
-        // ctx.fillText(content, 60, 155)
         for (let i = 0; i < lines.length; i++) {
             const y = 155 + i * 52 + i * 23
             ctx.fillText(lines[i], 60, y)
