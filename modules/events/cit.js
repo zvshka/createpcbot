@@ -10,7 +10,11 @@ module.exports = class extends Event {
     }
 
     async run(client, message) {
-        if (message.content !== "\\") return
+        if (!process.env.DEV) {
+            if (message.content !== "\\") return
+        } else {
+            if (message.content !== "/") return
+        }
         const ref = message.referencedMessage
         if (!ref) return message.channel.send("Лэээ, кого цитировать то")
         if (ref.content.length < 1) return message.channel.send("Лэээ, текст дай")
@@ -34,7 +38,9 @@ module.exports = class extends Event {
 
         if (message.attachments.size > 0) {
             const image = await loadImage(message.attachments.first().attachment)
+            ctx.globalAlpha = 0.65;
             ctx.drawImage(image, 0, 0, width, height)
+            ctx.globalAlpha = 1
         }
 
         ctx.fillStyle = '#ffffff';
