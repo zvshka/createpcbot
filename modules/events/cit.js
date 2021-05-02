@@ -23,7 +23,7 @@ module.exports = class extends Event {
         const member = await message.guild.members.fetch(ref.author.id).catch(_ => {})
         const name = member ? member.displayName : ref.author.username
 
-        const text = "«" + ref.content + "»."
+        const text = "«" + ref.content.trim() + "»."
         const lines = text.split("\n").map(row => this.getLines(textCtx, row, 880, '52px "Google Sans Italic"')).flat()
         const width = 1000
         const height = 35 + 66 + 54 + this.calcHeight(lines) + 60 + 150 + 60
