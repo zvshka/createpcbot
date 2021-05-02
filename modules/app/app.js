@@ -33,7 +33,7 @@ module.exports = class extends Feature {
         const returnObject = {
             status: res.status === 200
         }
-        if (returnObject.status && res.data.list) {
+        if (returnObject.status && res.data.hasOwnProperty("list")) {
             returnObject.list = res.data.list || []
         }
         if (returnObject.status && res.data.users_config) {
