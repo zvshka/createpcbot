@@ -107,6 +107,7 @@ class Handler {
         }
 
         this.features.set(feature.name, feature);
+        console.log(`[LOADING] Загружаю Feature: ${feature.name}`)
 
         feature.commands.forEach(command => {
             this.loadCommand(command);
@@ -130,6 +131,7 @@ class Handler {
         }
 
         this.commands.set(command.name, command);
+        console.log(`[LOADING] Загружаю команду: ${command.name}`)
 
         command.aliases.forEach(alias => {
             // Alias might already be a command or might already be in use
@@ -152,6 +154,7 @@ class Handler {
         events.push(event);
 
         this.events.set(event.eventName, events);
+        console.log(`[LOADING] Загружаю ивент: ${event.name}`)
     }
 
     /**

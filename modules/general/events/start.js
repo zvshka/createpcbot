@@ -1,9 +1,9 @@
-const {Event} = require('../../handler');
+const {Event} = require('../../../handler');
 const {MessageEmbed} = require('discord.js')
 
 module.exports = class extends Event {
     constructor() {
-        super('ready');
+        super('ready', 'start');
     }
 
     async run(client) {

@@ -1,10 +1,10 @@
-const {Event} = require('../../handler');
+const {Event} = require('../../../handler');
 const parse = require('parse-ms')
 const moment = require('moment-timezone');
 
 module.exports = class extends Event {
     constructor() {
-        super('ready');
+        super('ready', 'hours');
     }
 
     async run(client) {

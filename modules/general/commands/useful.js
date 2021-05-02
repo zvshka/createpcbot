@@ -1,8 +1,8 @@
-const {Command} = require('../../handler');
-const Useful = require('../../schemas/Useful')
+const {Command} = require('../../../handler');
+const Useful = require('../../../schemas/Useful')
 const {MessageEmbed} = require("discord.js");
 const rm = require('discord.js-reaction-menu')
-const Utils = require('../../Utils')
+const Utils = require('../../../Utils')
 module.exports = class extends Command {
     constructor() {
         super('useful', {

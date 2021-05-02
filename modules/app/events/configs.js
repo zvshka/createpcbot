@@ -5,7 +5,7 @@ const User = require('../../../schemas/User')
 
 module.exports = class extends Event {
     constructor({fetch}) {
-        super('ready');
+        super('ready', 'configs');
         this.fetch = fetch
     }
 

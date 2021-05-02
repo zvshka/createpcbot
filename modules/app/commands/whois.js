@@ -16,7 +16,7 @@ module.exports = class extends Command {
     }
 
     async run(message, args) {
-        message.delete({timeout: 10000}).catch(e => {
+        message.delete({timeout: 10000}).catch(_ => {
         })
         const guy = await this.fetch("/getUsers_info.php", {
             name: args.join(" ")
@@ -27,14 +27,14 @@ module.exports = class extends Command {
                 .setAuthor(guy.name)
                 .setThumbnail(guy.avatar)
                 .setDescription(`
-            Рейтинг: ${guy.rating}
-            Дата регистрации: ${guy.registration}
-            Сборок сейчас опубликовано: ${guy.configs}
-            Сообщений: ${guy.messages}
-            Видит рекламу: ${guy.donater}
-            Штрафов: ${guy.warns.length > 0 ? guy.warns.reduce((a, b) => a + parseInt(b.points), 0) : 0}
+            **Рейтинг:** ${guy.rating}
+            **Дата регистрации:** ${guy.registration}
+            **Сборок сейчас опубликовано:** ${guy.configs}
+            **Сообщений:** ${guy.messages}
+            **Видит рекламу:** ${guy.donater}
+            **Штрафов:** ${guy.warns.length > 0 ? guy.warns.reduce((a, b) => a + parseInt(b.points), 0) : 0}
             
-            ${inDatabase ? `Discord: ${
+            ${inDatabase ? `**Discord:** ${
                     ((await message.guild.members.fetch(inDatabase.discord)).displayName)
                 } (<@${inDatabase.discord}>)` : ""}`)
             return message.channel.send(embed)

@@ -4,11 +4,13 @@ class Event extends Toggleable {
     /**
      * @description Create a new event
      * @param {string} eventName - The name of the event
+     * @param {string} name - Name
      */
-    constructor(eventName) {
+    constructor(eventName, name) {
         super();
 
         this.eventName = eventName;
+        this.name = name
     }
 
     /**

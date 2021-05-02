@@ -1,6 +1,6 @@
 const {MessageEmbed} = require('discord.js');
-const {Command} = require('../../handler');
-const Utils = require('../../Utils.js');
+const {Command} = require('../../../handler');
+const Utils = require('../../../Utils.js');
 
 module.exports = class extends Command {
     constructor({commandHandler}) {
@@ -21,6 +21,16 @@ module.exports = class extends Command {
 
         if (args.length === 0) {
             description = `
+            
+        **Модули**:
+        ${Array.from(this.commandHandler.features)
+                .map(
+                    ([name, feature]) => `**${name}** - ${feature.commands.map(Command => Command.name).join(', ')}`,
+                )
+                .join('\n')}
+                
+                
+        **Команды:**
         ${Array.from(this.commandHandler.commands)
                 .map(
                     ([, command]) => `**${prefix}${command.usage}** - ${command.info}`,

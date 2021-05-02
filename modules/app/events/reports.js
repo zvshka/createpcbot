@@ -1,10 +1,9 @@
-const axios = require("axios");
 const {MessageEmbed} = require("discord.js");
 const {Event} = require('../../../handler');
 
 module.exports = class extends Event {
     constructor({fetch}) {
-        super('ready');
+        super('ready', 'reports');
         this.fetch = fetch
     }
 

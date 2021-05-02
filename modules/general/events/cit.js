@@ -1,4 +1,4 @@
-const {Event} = require('../../handler');
+const {Event} = require('../../../handler');
 const {MessageAttachment} = require('discord.js')
 const {createCanvas, loadImage, registerFont} = require('canvas')
 registerFont("./fonts/GoogleSans-Regular.ttf", {family: "Google Sans Regular"})
@@ -6,7 +6,7 @@ registerFont("./fonts/GoogleSans-Italic.ttf", {family: "Google Sans Italic"})
 
 module.exports = class extends Event {
     constructor() {
-        super('message');
+        super('message', 'cit');
     }
 
     async run(client, message) {

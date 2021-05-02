@@ -1,6 +1,6 @@
 const {MessageEmbed} = require("discord.js");
 
-const {Command} = require('../../handler');
+const {Command} = require('../../../handler');
 
 module.exports = class extends Command {
     constructor({commandHandler}) {

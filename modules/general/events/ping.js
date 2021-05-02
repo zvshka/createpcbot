@@ -1,4 +1,4 @@
-const {Event} = require('../../handler');
+const {Event} = require('../../../handler');
 
 const answers = [
     "Чё надо?",
@@ -12,7 +12,7 @@ const answers = [
 
 module.exports = class extends Event {
     constructor() {
-        super('message');
+        super('message', 'ping');
     }
 
     async run(client, message) {
