@@ -16,11 +16,14 @@ module.exports = class extends Event {
 
         const guild = client.guilds.cache.get("725786415438364692")
         const channel = guild.channels.cache.get("835439074571190292")
-        channel.send(start)
+        if (!process.env.DEV) {
+            channel.send(start)
+        }
 
         process.stdin.resume();//so the program will not close instantly
 
         function exitHandler(options, exitCode) {
+            if (process.env.DEV) return process.exit()
             const embed = new MessageEmbed()
                 .setTitle("Выключение")
                 .setDescription(`Происходит выключение по коду ${exitCode}`)

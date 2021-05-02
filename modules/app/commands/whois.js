@@ -32,6 +32,7 @@ module.exports = class extends Command {
             Сборок сейчас опубликовано: ${guy.configs}
             Сообщений: ${guy.messages}
             Видит рекламу: ${guy.donater}
+            Штрафов: ${guy.warns.length > 0 ? guy.warns.reduce((a, b) => a + parseInt(b.points), 0) : 0}
             
             ${inDatabase ? `Discord: ${
                     ((await message.guild.members.fetch(inDatabase.discord)).displayName)
