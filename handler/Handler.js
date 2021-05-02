@@ -160,14 +160,20 @@ class Handler {
     register() {
         // Handle events
         for (const [name, handlers] of this.events) {
-            this.client.on(name, (...params) => {
+            this.client.on(name,  (...params) => {
                 for (const handler of handlers) {
                     // Run event if enabled
                     if (handler.isEnabled) {
                         try {
                             handler.run(this.client, ...params);
                         } catch (err) {
-                            console.error(err);
+                            /**
+                             * @type {Guild}
+                             */
+                            this.client.guilds.fetch("725786415438364692").then(guild => {
+                                const channel = guild.channels.cache.get("836263032702107749")
+                                channel.send(`Плохой человек создал ошибку, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)
+                            })
                         }
                     }
                 }
