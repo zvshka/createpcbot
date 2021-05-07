@@ -1,5 +1,6 @@
 const {MessageEmbed} = require("discord.js");
 const {Event} = require('../../../handler');
+const Report = require('../../../schemas/Report')
 
 module.exports = class extends Event {
     constructor({fetch}) {
@@ -54,6 +55,25 @@ module.exports = class extends Event {
                 `)
                     .setFooter(report.ID)
                 await reportChannel.send(embed)
+                const reportDoc = {
+                    id: report.ID,
+                    type: report.Type,
+                    content: report.message_warn
+                }
+                if (report.Type === "config") {
+                    reportDoc.config = {
+                        id: report.ID_config,
+                        name: report.name_config,
+                        description: report.description_config
+                    }
+                } else {
+                    reportDoc.message = {
+                        id: report.id_message,
+                        text: report.text_message
+                    }
+                }
+                const nReport = new Report(reportDoc)
+                await nReport.save()
             }
             for (let embed of checked) {
                 await embed.message.delete()

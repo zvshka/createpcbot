@@ -10,7 +10,7 @@ module.exports = class extends Command {
             info: 'Присоединить аккаунт приложения',
             usage: 'connect',
             guildOnly: false,
-            adminOnly: true
+            adminOnly: false
         });
     }
 
