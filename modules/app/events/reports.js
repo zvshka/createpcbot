@@ -17,8 +17,7 @@ module.exports = class extends Event {
 
     async post(bot) {
         const reports = await this.fetch("/getListUsers_warn.php", {
-            login: "zvshka",
-            password: "1234eszxcv"
+            auth: true
         })
 
         if (reports.status) {

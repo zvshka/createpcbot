@@ -1,6 +1,8 @@
 const {MessageEmbed} = require("discord.js");
 const {Command} = require('../../../handler');
 const User = require('../../../schemas/User')
+const Report = require('../../../schemas/Report')
+const rm = require('discord.js-reaction-menu')
 
 module.exports = class extends Command {
     constructor({commandHandler, fetch}) {
@@ -18,15 +20,17 @@ module.exports = class extends Command {
     async run(message, args) {
         message.delete({timeout: 10000}).catch(_ => {
         })
-        const guy = await this.fetch("/getUsers_info.php", {
-            name: args.join(" ")
-        })
-        if (guy.status) {
-            const inDatabase = await User.findOne({app: guy.name})
-            const embed = new MessageEmbed()
-                .setAuthor(guy.name)
-                .setThumbnail(guy.avatar)
-                .setDescription(`
+        if (args.length > 0) {
+            const guy = await this.fetch("/getUsers_info.php", {
+                name: args.join(" ")
+            })
+            if (guy.status) {
+                const inDatabase = await User.findOne({app: guy.name})
+                const check = inDatabase ? inDatabase.discord === message.author.id : false
+                const embed = new MessageEmbed()
+                    .setAuthor(guy.name)
+                    .setThumbnail(guy.avatar)
+                    .setDescription(`
             **Рейтинг:** ${guy.rating}
             **Дата регистрации:** ${guy.registration}
             **Сборок сейчас опубликовано:** ${guy.configs}
@@ -34,13 +38,18 @@ module.exports = class extends Command {
             **Видит рекламу:** ${guy.donater}
             **Штрафов:** ${guy.warns.length > 0 ? guy.warns.reduce((a, b) => a + parseInt(b.points), 0) : 0}
             
-            ${inDatabase ? `**Discord:** ${
-                    ((await message.guild.members.fetch(inDatabase.discord)).displayName)
-                } (<@${inDatabase.discord}>)` : ""}`)
-            return message.channel.send(embed)
+            ${inDatabase ? `**Discord:** ${(await message.guild.members.fetch(inDatabase.discord)).displayName} (<@${inDatabase.discord}>)` : ""}`)
+                return message.channel.send(embed)
+            } else {
+                return message.channel.send("Такого человека нет")
+            }
         } else {
-            return message.channel.send("Такого человека нет")
-        }
+            const inDatabase = await User.findOne({discord: message.author.id})
+            if (inDatabase) {
 
+            } else {
+
+            }
+        }
     }
 };

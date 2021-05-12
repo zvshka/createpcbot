@@ -19,6 +19,12 @@ module.exports = class extends Feature {
      */
     async fetch(url, dataObject) {
         let data = ""
+        if (dataObject.hasOwnProperty("auth")) {
+            if (dataObject.auth) {
+                dataObject.removeProperty("auth")
+                Object.assign(dataObject, {password: process.env.PASSWORD, login: process.env.LOGIN})
+            }
+        }
         for (let key in dataObject) {
             data += `${key}=${dataObject[key]}&`
         }

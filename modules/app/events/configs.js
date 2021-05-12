@@ -32,8 +32,7 @@ module.exports = class extends Event {
                     await Queue.findOneAndDelete({code: config.code})
                     return await this.fetch("/delete_users_config.php", {
                         ID_CONFIG: config.data.ID,
-                        login: "zvshka",
-                        password: "1234eszxcv"
+                        auth: true
                     })
                 }
             }

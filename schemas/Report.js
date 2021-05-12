@@ -3,6 +3,7 @@ const Schema = mongoose.Schema({
     id: String,
     type: String,
     content: String,
+    user: String,
     config: {
         type: Object,
         default: null
