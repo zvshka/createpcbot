@@ -21,7 +21,7 @@ module.exports = class extends Feature {
         let data = ""
         if (dataObject.hasOwnProperty("auth")) {
             if (dataObject.auth) {
-                dataObject.removeProperty("auth")
+                delete dataObject.auth
                 Object.assign(dataObject, {password: process.env.PASSWORD, login: process.env.LOGIN})
             }
         }
