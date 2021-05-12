@@ -7,6 +7,7 @@ module.exports = class extends Feature {
         super("giveaway");
         this.load()
         this.deps = deps
+        this.disable()
     }
 
     load() {

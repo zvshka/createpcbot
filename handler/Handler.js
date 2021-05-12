@@ -1,10 +1,11 @@
-const {MessageEmbed} = require('discord.js');
-const typing = require('discord.js')
+import {MessageEmbed} from "discord.js";
 
-const Feature = require('./Feature.js');
-const Command = require('./Command.js');
-const Event = require('./Event.js');
-const Utils = require('../Utils.js');
+import * as typing from "discord.js"
+
+import Event from "./Event"
+import Command from "./Command"
+import Utils from "../Utils"
+import Feature from "./Feature";
 
 class Handler {
     /**
@@ -52,14 +53,16 @@ class Handler {
      * @param {object} dependencies - The dependencies of the modules
      * @returns {undefined}
      */
-    load(directory, dependencies) {
+    async load(directory, dependencies) {
         this.directory = directory;
         this.dependencies = dependencies;
 
         // Find and require all JavaScript files
-        const nodes = Utils.readdirSyncRecursive(directory)
-            .filter(file => file.endsWith('.js'))
-            .map(require);
+        const nodes = await Promise.all(
+            Utils.readdirSyncRecursive(directory)
+                .filter(file => file.endsWith('.js'))
+                .map(async file => (await import(file)).default)
+        )
 
         // Load all Features
         nodes.forEach(Node => {
@@ -100,6 +103,7 @@ class Handler {
      * @param {Feature} feature - The feature that needs to be loaded
      */
     loadFeature(feature) {
+        if (!feature.isEnabled) return
         if (this.features.has(feature.name)) {
             throw new Error(
                 `Can't load Feature, the name '${feature.name}' is already used`,
@@ -163,7 +167,7 @@ class Handler {
     register() {
         // Handle events
         for (const [name, handlers] of this.events) {
-            this.client.on(name,  (...params) => {
+            this.client.on(name, (...params) => {
                 for (const handler of handlers) {
                     // Run event if enabled
                     if (handler.isEnabled) {
@@ -226,7 +230,6 @@ class Handler {
             }
 
 
-
             try {
                 await cmd.run(message, args);
                 console.log(`[LOG] ${message.author.tag} использовал ${cmd.name}`)
@@ -248,4 +251,4 @@ class Handler {
     }
 }
 
-module.exports = Handler;
+export default Handler

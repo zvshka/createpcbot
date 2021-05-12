@@ -1,10 +1,8 @@
-const {MessageEmbed} = require("discord.js");
-const {Command} = require('../../../handler');
-const User = require('../../../schemas/User')
-const Report = require('../../../schemas/Report')
-const rm = require('discord.js-reaction-menu')
+import {MessageEmbed} from "discord.js";
+import Command from "../../../handler/Command";
+import User from "../../../schemas/User";
 
-module.exports = class extends Command {
+export default class Whois extends Command {
     constructor({commandHandler, fetch}) {
         super('whois', {
             aliases: ['who'],
@@ -26,7 +24,6 @@ module.exports = class extends Command {
             })
             if (guy.status) {
                 const inDatabase = await User.findOne({app: guy.name})
-                const check = inDatabase ? inDatabase.discord === message.author.id : false
                 const embed = new MessageEmbed()
                     .setAuthor(guy.name)
                     .setThumbnail(guy.avatar)
@@ -52,4 +49,4 @@ module.exports = class extends Command {
             }
         }
     }
-};
+}

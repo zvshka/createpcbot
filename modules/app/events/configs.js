@@ -1,9 +1,9 @@
-const {Event} = require('../../../handler');
-const Configuration = require('../../../schemas/Configuration')
-const Queue = require('../../../schemas/Queue')
-const User = require('../../../schemas/User')
+import Event from "../../../handler/Event";
+import Configuration from "../../../schemas/Configuration";
+import Queue from "../../../schemas/Queue";
+import User from "../../../schemas/User";
 
-module.exports = class extends Event {
+export default class Configs extends Event {
     constructor({fetch}) {
         super('ready', 'configs');
         this.fetch = fetch

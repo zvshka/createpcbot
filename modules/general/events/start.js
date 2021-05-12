@@ -1,7 +1,7 @@
-const {Event} = require('../../../handler');
-const {MessageEmbed} = require('discord.js')
+import Event from "../../../handler/Event";
+import {MessageEmbed} from "discord.js";
 
-module.exports = class extends Event {
+export default class StartEvent extends Event {
     constructor() {
         super('ready', 'start');
     }
@@ -22,8 +22,12 @@ module.exports = class extends Event {
 
         process.stdin.resume();//so the program will not close instantly
 
-        function exitHandler(options, exitCode) {
-            if (process.env.DEV) return process.exit()
+        function exitHandler(options, exitCode, err) {
+            if (process.env.DEV) {
+                console.error(exitCode)
+                console.error(err)
+                return process.exit()
+            }
             const embed = new MessageEmbed()
                 .setTitle("Выключение")
                 .setDescription(`Происходит выключение по коду ${exitCode}`)

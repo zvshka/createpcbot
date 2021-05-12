@@ -1,6 +1,6 @@
-const {Command} = require('../../../handler');
+import Command from "../../../handler/Command";
 
-module.exports = class extends Command {
+export default class ErrorCommand extends Command {
     constructor() {
         super('error', {
             aliases: ['err'],

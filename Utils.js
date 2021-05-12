@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from "fs"
+import path from "path";
 
 class Utils {
     /**
@@ -63,4 +63,4 @@ class Utils {
     }
 }
 
-module.exports = Utils;
+export default Utils

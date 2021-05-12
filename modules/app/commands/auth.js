@@ -1,9 +1,9 @@
-const {Command} = require('../../../handler');
-const Queue = require('../../../schemas/Queue')
-const User = require('../../../schemas/User')
-const {MessageEmbed} = require('discord.js')
+import Command from "../../../handler/Command";
+import Queue from "../../../schemas/Queue";
+import User from "../../../schemas/User";
+import {MessageEmbed} from "discord.js";
 
-module.exports = class extends Command {
+export default class extends Command {
     constructor() {
         super('connect', {
             aliases: ['c'],

@@ -1,15 +1,14 @@
-const {Feature} = require('../../handler')
-const axios = require('axios')
-const configs = require('./events/configs')
-const reports = require('./events/reports')
-const whois = require('./commands/whois')
+import Feature from "../../handler/Feature";
+import axios from "axios";
+import Configs from "./events/configs";
+import Reports from "./events/reports";
+import Whois from "./commands/whois";
 
-module.exports = class extends Feature {
+export default class extends Feature {
     constructor(deps) {
         super("app");
-        this.registerEvent(new configs({...deps, fetch: this.fetch}))
-        this.registerEvent(new reports({...deps, fetch: this.fetch}))
-        this.registerCommand(new whois({...deps, fetch: this.fetch}))
+        this.deps = deps
+        this.load()
     }
 
     /**
@@ -22,7 +21,7 @@ module.exports = class extends Feature {
         if (dataObject.hasOwnProperty("auth")) {
             if (dataObject.auth) {
                 delete dataObject.auth
-                Object.assign(dataObject, {password: process.env.PASSWORD, login: process.env.LOGIN})
+                Object.assign(dataObject, {login: process.env.LOGIN, password: process.env.PASSWORD})
             }
         }
         for (let key in dataObject) {
@@ -57,5 +56,15 @@ module.exports = class extends Feature {
             returnObject.warns = JSON.parse(info.list_warning)
         }
         return returnObject
+    }
+
+    load() {
+        const dependency = {...this.deps, fetch: this.fetch}
+        const configsEvent = new Configs(dependency)
+        const reportsEvent = new Reports(dependency)
+        const whoisCommand = new Whois(dependency)
+        this.registerEvent(configsEvent)
+        this.registerEvent(reportsEvent)
+        this.registerCommand(whoisCommand)
     }
 }

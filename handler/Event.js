@@ -1,4 +1,4 @@
-const Toggleable = require('./Toggleable.js');
+import Toggleable from "./Toggleable"
 
 class Event extends Toggleable {
     /**
@@ -21,4 +21,4 @@ class Event extends Toggleable {
     }
 }
 
-module.exports = Event;
+export default Event

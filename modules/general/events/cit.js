@@ -1,10 +1,10 @@
-const {Event} = require('../../../handler');
-const {MessageAttachment} = require('discord.js')
-const {createCanvas, loadImage, registerFont} = require('canvas')
+import Event from "../../../handler/Event";
+import {MessageAttachment} from "discord.js";
+import {createCanvas, loadImage, registerFont} from "canvas"
 registerFont("./fonts/GoogleSans-Regular.ttf", {family: "Google Sans Regular"})
 registerFont("./fonts/GoogleSans-Italic.ttf", {family: "Google Sans Italic"})
 
-module.exports = class extends Event {
+export default class CitEvent extends Event {
     constructor() {
         super('message', 'cit');
     }

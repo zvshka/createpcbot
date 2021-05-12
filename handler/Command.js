@@ -1,4 +1,4 @@
-const Toggleable = require('./Toggleable.js');
+import Toggleable from "./Toggleable"
 
 class Command extends Toggleable {
     /**
@@ -55,4 +55,4 @@ class Command extends Toggleable {
     }
 }
 
-module.exports = Command;
+export default Command

@@ -1,4 +1,4 @@
-const {Event} = require('../../../handler');
+import Event from "../../../handler/Event";
 
 const answers = [
     "Чё надо?",
@@ -10,7 +10,7 @@ const answers = [
     "Иди сборку сделай и поясни за SP9"
 ]
 
-module.exports = class extends Event {
+export default class PingEvent extends Event {
     constructor() {
         super('message', 'ping');
     }

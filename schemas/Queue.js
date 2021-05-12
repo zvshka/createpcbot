@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema({
     discord: String,
     code: String
 }, {minimize: false})
-module.exports = mongoose.model("Queue", Schema)
+export default mongoose.model("Queue", Schema)

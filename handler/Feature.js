@@ -1,7 +1,6 @@
-const Command = require('./Command.js');
-const Event = require('./Event.js');
-const Toggleable = require('./Toggleable.js');
-
+import Event from "./Event"
+import Command from "./Command"
+import Toggleable from "./Toggleable"
 class Feature extends Toggleable {
     /**
      * @description Create a new Feature
@@ -95,4 +94,4 @@ class Feature extends Toggleable {
     }
 }
 
-module.exports = Feature;
+export default Feature

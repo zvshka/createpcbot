@@ -1,8 +1,8 @@
-const {MessageEmbed} = require("discord.js");
-const {Event} = require('../../../handler');
-const Report = require('../../../schemas/Report')
+import {MessageEmbed} from "discord.js";
+import Event from "../../../handler/Event";
+import Report from "../../../schemas/Report";
 
-module.exports = class extends Event {
+export default class Reports extends Event {
     constructor({fetch}) {
         super('ready', 'reports');
         this.fetch = fetch

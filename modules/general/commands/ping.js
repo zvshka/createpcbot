@@ -1,8 +1,7 @@
-const {stripIndents} = require('common-tags');
+import {stripIndents} from "common-tags";
+import Command from "../../../handler/Command";
 
-const {Command} = require('../../../handler');
-
-module.exports = class extends Command {
+export default class PingCommand extends Command {
     constructor() {
         super('ping', {
             aliases: ['pong'],

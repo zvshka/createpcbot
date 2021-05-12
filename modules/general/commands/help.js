@@ -1,8 +1,8 @@
-const {MessageEmbed} = require('discord.js');
-const {Command} = require('../../../handler');
-const Utils = require('../../../Utils.js');
+import {MessageEmbed} from "discord.js";
+import Command from "../../../handler/Command";
+import Utils from "../../../Utils";
 
-module.exports = class extends Command {
+export default class HelpCommand extends Command {
     constructor({commandHandler}) {
         super('help', {
             aliases: ['h', 'commands', 'cmds'],

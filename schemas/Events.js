@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const EventSchema = mongoose.Schema({
     id: String,
     name: String,
@@ -8,4 +8,4 @@ const EventSchema = mongoose.Schema({
     configs: [],
     winner: String
 }, {minimize: false})
-module.exports = mongoose.model("Event", EventSchema)
+export default mongoose.model("Event", EventSchema)

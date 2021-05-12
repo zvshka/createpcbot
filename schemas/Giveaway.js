@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema({
     guild: String,
     channel: String,
@@ -8,4 +8,4 @@ const Schema = mongoose.Schema({
     ends: Date,
     start: Date
 }, {minimize: false})
-module.exports = mongoose.model("Giveaway", Schema)
+export default mongoose.model("Giveaway", Schema)

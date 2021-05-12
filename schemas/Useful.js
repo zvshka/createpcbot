@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema({
     description: String,
     url: String
 }, {minimize: false})
-module.exports = mongoose.model("Useful", Schema)
+export default mongoose.model("Useful", Schema)

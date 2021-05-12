@@ -1,8 +1,8 @@
-const {Event} = require('../../../handler');
-const parse = require('parse-ms')
+import Event from "../../../handler/Event";
+import parseMilliseconds from "parse-ms";
 const moment = require('moment-timezone');
 
-module.exports = class extends Event {
+export default class HoursEvent extends Event {
     constructor() {
         super('ready', 'hours');
     }
@@ -35,7 +35,7 @@ module.exports = class extends Event {
         setTimeout(() => {
             sendToChat(hoursNear + 2)
             setInterval(() => {
-                const parsed = parse(Date.now())
+                const parsed = parseMilliseconds(Date.now())
                 sendToChat(parsed.hours + 2)
             }, hour)
         }, timeout)

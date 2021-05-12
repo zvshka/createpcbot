@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const ConfigSchema = new mongoose.Schema({
+import mongoose from "mongoose";
+const Schema = new mongoose.Schema({
     ID: String,
     description: String,
     author: String,
@@ -45,4 +45,4 @@ const ConfigSchema = new mongoose.Schema({
     SSD: [],
     M2: [],
 }, {minimize: false})
-module.exports = mongoose.model("Configuration", ConfigSchema)
+export default mongoose.model("Configuration", Schema)

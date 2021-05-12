@@ -1,8 +1,13 @@
 /* eslint-disable global-require */
 
+import Handler from "./Handler";
+import Feature from "./Feature";
+import Command from "./Command";
+import Event from "./Event";
+
 module.exports = {
-  Handler: require('./Handler.js'),
-  Feature: require('./Feature.js'),
-  Command: require('./Command.js'),
-  Event: require('./Event.js'),
+  Handler: Handler,
+  Feature: Feature,
+  Command: Command,
+  Event: Event,
 };

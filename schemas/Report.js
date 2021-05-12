@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema({
     id: String,
     type: String,
@@ -13,4 +13,4 @@ const Schema = mongoose.Schema({
         default: null
     }
 }, {minimize: false})
-module.exports = mongoose.model("Report", Schema)
+export default mongoose.model("Report", Schema)
