@@ -15,7 +15,7 @@ export default class CitEvent extends Event {
         } else {
             if (message.content !== "/") return
         }
-        const ref = message.referencedMessage
+        const ref = await message.fetchReference().catch(e => {})
         if (!ref) return message.channel.send("Лэээ, кого цитировать то")
         if (ref.content.length < 1) return message.channel.send("Лэээ, текст дай")
         const textCanvas = createCanvas(1000, 500)
