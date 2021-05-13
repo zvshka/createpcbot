@@ -103,7 +103,6 @@ class Handler {
      * @param {Feature} feature - The feature that needs to be loaded
      */
     loadFeature(feature) {
-        if (!feature.isEnabled) return
         if (this.features.has(feature.name)) {
             throw new Error(
                 `Can't load Feature, the name '${feature.name}' is already used`,

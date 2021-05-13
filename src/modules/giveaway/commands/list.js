@@ -1,9 +1,9 @@
-const {Command} = require("../../../handler");
-const {MessageEmbed} = require('discord.js')
-const Giveaway = require('../../../schemas/Giveaway')
-const rm = require('discord.js-reaction-menu')
-const Utils = require('../../../Utils')
-module.exports = class extends Command {
+import Command from "../../../handler/Command";
+import {MessageEmbed} from "discord.js";
+import Giveaway from "../../../schemas/Giveaway";
+import rm from "discord.js-reaction-menu"
+import Utils from "../../../Utils";
+export default class GList extends Command {
     constructor() {
         super("giveaway_list", {
             aliases: ["glist", "giveaways"],

@@ -1,5 +1,5 @@
-const {Command} = require("../../../handler");
-module.exports = class extends Command {
+import Command from "../../../handler/Command";
+export default class GCreate extends Command {
     constructor() {
         super("giveaway_create", {
             aliases: ["gcreate"],

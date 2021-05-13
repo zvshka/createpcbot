@@ -1,34 +1,39 @@
-const {Feature} = require('../../handler')
-const Utils = require('../../Utils')
-const path = require("path");
+import Feature from "../../handler/Feature";
+import Utils from "../../Utils";
+import path from "path";
 
-module.exports = class extends Feature {
+export default class Giveaway extends Feature {
     constructor(deps) {
         super("giveaway");
-        this.load()
         this.deps = deps
-        this.disable()
+        this.toggle()
+        this.load()
     }
 
     load() {
+
         try {
-            Utils
+            Promise.all(Utils
                 .readdirSyncRecursive(path.join(__dirname, './commands'))
                 .filter(file => file.endsWith('.js'))
-                .map(require)
-                .map(Node => new Node({...this.deps}))
-                .map(Node => this.registerCommand(Node))
+                .map(async file => (await import(file)).default))
+                .then(nodes => {
+                    nodes.map(Node => new Node({...this.deps}))
+                        .map(Node => this.registerCommand(Node))
+                })
         } catch (e) {
 
         }
 
         try {
-            Utils
+            Promise.all(Utils
                 .readdirSyncRecursive(path.join(__dirname, './events'))
                 .filter(file => file.endsWith('.js'))
-                .map(require)
-                .map(Node => new Node({...this.deps}))
-                .map(this.registerEvent)
+                .map(async file => (await import(file)).default))
+                .then(nodes => {
+                    nodes.map(Node => new Node({...this.deps}))
+                        .map(Node => this.registerEvent(Node))
+                })
         } catch (e) {
 
         }

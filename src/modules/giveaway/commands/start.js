@@ -1,9 +1,9 @@
-const {MessageEmbed} = require("discord.js");
-const {Command} = require("../../../handler");
-const Giveaway = require("../../../schemas/Giveaway")
-const ms = require("ms");
+import {MessageEmbed} from "discord.js";
+import Command from "../../../handler/Command";
+import Giveaway from "../../../schemas/Giveaway";
+import ms from "ms"
 
-module.exports = class extends Command {
+export default class GStart extends Command {
     constructor() {
         super("giveaway_start", {
             aliases: ["gstart"],
