@@ -2,8 +2,9 @@
   "name": "createpcbot-classed",
   "version": "1.0.0",
   "description": "Create pc Bot built on classes",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "build": "babel ./src -d ./dist -s",
     "test": "jest --passWithNoTests"
   },
   "engines": {
@@ -22,6 +23,7 @@
   "dependencies": {
     "async": "^3.2.0",
     "axios": "^0.21.1",
+    "babel-preset-env": "^1.7.0",
     "canvas": "^2.7.0",
     "cheerio": "^1.0.0-rc.6",
     "common-tags": "^1.8.0",

@@ -14,7 +14,6 @@ export default class extends Command {
         });
     }
 
-
     async run(message) {
         const alreadyIn = await Queue.findOne({discord: message.author.id})
         if (alreadyIn) {

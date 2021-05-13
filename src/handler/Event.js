@@ -13,6 +13,7 @@ class Event extends Toggleable {
         this.name = name
     }
 
+
     /**
      * @description Method that runs when the event is fired
      */

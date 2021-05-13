@@ -13,6 +13,7 @@ class Toggleable {
   /**
    * @description Changes isEnabled to true.
    */
+
   enable() {
     this.isEnabled = true;
   }

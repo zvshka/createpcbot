@@ -45,4 +45,5 @@ const Schema = new mongoose.Schema({
     SSD: [],
     M2: [],
 }, {minimize: false})
+
 export default mongoose.model("Configuration", Schema)
