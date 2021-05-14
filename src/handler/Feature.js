@@ -32,6 +32,10 @@ class Feature extends Toggleable {
         this.events = [];
     }
 
+    load() {
+
+    }
+
     /**
      * @description Register a new command
      * @param {Command} command - The command that needs to be registered

@@ -65,14 +65,14 @@ class Handler {
         )
 
         // Load all Features
-        nodes.forEach(Node => {
+        for (const Node of nodes) {
             if (Node.prototype instanceof Feature) {
-                this.loadFeature(new Node(dependencies));
+                await this.loadFeature(new Node(dependencies));
             }
-        });
+        }
 
         // Load all Command and Event classes that haven't loaded yet
-        nodes.forEach(Node => {
+        for (const Node of nodes) {
             if (Node.prototype instanceof Command) {
                 const loaded = Array.from(this.commands.values()).some(
                     command => command instanceof Node,
@@ -92,7 +92,7 @@ class Handler {
                     this.loadEvent(new Node(dependencies));
                 }
             }
-        });
+        }
 
         // Register loaded commands and events
         this.register();
@@ -102,12 +102,14 @@ class Handler {
      * @description Load a feature and it's commands
      * @param {Feature} feature - The feature that needs to be loaded
      */
-    loadFeature(feature) {
+    async loadFeature(feature) {
         if (this.features.has(feature.name)) {
             throw new Error(
                 `Can't load Feature, the name '${feature.name}' is already used`,
             );
         }
+
+        await feature.load()
 
         this.features.set(feature.name, feature);
         console.log(`[LOADING] Загружаю Feature: ${feature.name}`)

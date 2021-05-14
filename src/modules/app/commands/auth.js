@@ -3,7 +3,7 @@ import Queue from "../../../schemas/Queue";
 import User from "../../../schemas/User";
 import {MessageEmbed} from "discord.js";
 
-export default class extends Command {
+export default class Auth extends Command {
     constructor() {
         super('connect', {
             aliases: ['c'],

@@ -1,14 +1,12 @@
 import Feature from "../../handler/Feature";
 import axios from "axios";
-import Configs from "./events/configs";
-import Reports from "./events/reports";
-import Whois from "./commands/whois";
+import Utils from "../../Utils";
+import path from "path";
 
 export default class extends Feature {
     constructor(deps) {
         super("app");
         this.deps = deps
-        this.load()
     }
 
     /**
@@ -58,13 +56,28 @@ export default class extends Feature {
         return returnObject
     }
 
-    load() {
+    async load() {
         const dependency = {...this.deps, fetch: this.fetch}
-        const configsEvent = new Configs(dependency)
-        const reportsEvent = new Reports(dependency)
-        const whoisCommand = new Whois(dependency)
-        this.registerEvent(configsEvent)
-        this.registerEvent(reportsEvent)
-        this.registerCommand(whoisCommand)
+        try {
+            const nodes = await Promise.all(Utils
+                .readdirSyncRecursive(path.join(__dirname, './commands'))
+                .filter(file => file.endsWith('.js'))
+                .map(async file => (await import(file)).default))
+            nodes.map(Node => new Node(dependency))
+                .map(Node => this.registerCommand(Node))
+        } catch (e) {
+
+        }
+
+        try {
+            const nodes = await Promise.all(Utils
+                .readdirSyncRecursive(path.join(__dirname, './events'))
+                .filter(file => file.endsWith('.js'))
+                .map(async file => (await import(file)).default))
+            nodes.map(Node => new Node(dependency))
+                .map(Node => this.registerEvent(Node))
+        } catch (e) {
+
+        }
     }
 }

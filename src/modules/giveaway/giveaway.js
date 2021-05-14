@@ -7,33 +7,27 @@ export default class Giveaway extends Feature {
         super("giveaway");
         this.deps = deps
         this.toggle()
-        this.load()
     }
 
-    load() {
-
+    async load() {
         try {
-            Promise.all(Utils
+            const nodes = await Promise.all(Utils
                 .readdirSyncRecursive(path.join(__dirname, './commands'))
                 .filter(file => file.endsWith('.js'))
                 .map(async file => (await import(file)).default))
-                .then(nodes => {
-                    nodes.map(Node => new Node({...this.deps}))
-                        .map(Node => this.registerCommand(Node))
-                })
+            nodes.map(Node => new Node(this.deps))
+                .map(Node => this.registerCommand(Node))
         } catch (e) {
 
         }
 
         try {
-            Promise.all(Utils
+            const nodes = await Promise.all(Utils
                 .readdirSyncRecursive(path.join(__dirname, './events'))
                 .filter(file => file.endsWith('.js'))
                 .map(async file => (await import(file)).default))
-                .then(nodes => {
-                    nodes.map(Node => new Node({...this.deps}))
-                        .map(Node => this.registerEvent(Node))
-                })
+            nodes.map(Node => new Node(this.deps))
+                .map(Node => this.registerCommand(Node))
         } catch (e) {
 
         }
