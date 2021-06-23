@@ -175,9 +175,6 @@ class Handler {
                         try {
                             handler.run(this.client, ...params);
                         } catch (err) {
-                            /**
-                             * @type {Guild}
-                             */
                             this.client.guilds.fetch("725786415438364692").then(guild => {
                                 const channel = guild.channels.cache.get("836263032702107749")
                                 channel.send(`Плохой человек создал ошибку, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)

@@ -11,7 +11,7 @@ export default class Reports extends Event {
     async run(client) {
         await this.post(client)
         setInterval(async () => {
-            await this.post(client)
+            await this.post(client).catch(e => {})
         }, 30000)
     }
 
@@ -28,7 +28,7 @@ export default class Reports extends Event {
             const reportChannel = await bot.channels.fetch("833058424928993290")
             const messages = await reportChannel.messages.fetch()
             const embeds = messages
-                .filter(message => message.embeds.length > 0)
+                .filter(message => message.embeds.length > 0 && message.embeds[0].footer)
                 .map(message => ({message, id: message.embeds[0].footer.text}))
             const checked = embeds
                 .filter(embed => !list.some(report => report.ID === embed.id))
