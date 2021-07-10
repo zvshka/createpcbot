@@ -33,27 +33,29 @@ export default class extends Feature {
                 }
                 return false
             })
-        const returnObject = {
-            status: res.status === 200
+        const status = res.status === 200
+        return {
+            status,
+            ...((status && res.data.hasOwnProperty("list")) && {
+                list: res.data.list || []
+            }),
+            ...((status && res.data.users_config) && {
+                configs: res.data.users_config
+            }),
+            ...((status && res.data.MESSAGE) && (() => {
+                const info = JSON.parse(res.data.MESSAGE)
+                return {
+                    name: info.name,
+                    avatar: info.avatar,
+                    messages: info.count_message,
+                    donater: Boolean(info.ShowAds),
+                    configs: info.count_publish_config,
+                    registration: info.date_registration,
+                    rating: info.rating,
+                    warns: JSON.parse(info.list_warning)
+                }
+            })())
         }
-        if (returnObject.status && res.data.hasOwnProperty("list")) {
-            returnObject.list = res.data.list || []
-        }
-        if (returnObject.status && res.data.users_config) {
-            returnObject.configs = res.data.users_config
-        }
-        if (returnObject.status && res.data.MESSAGE) {
-            const info = JSON.parse(res.data.MESSAGE)
-            returnObject.name = info.name
-            returnObject.avatar = info.avatar
-            returnObject.messages = info.count_message
-            returnObject.donater = Boolean(info.ShowAds) ? "Да" : "Нет"
-            returnObject.configs = info.count_publish_config
-            returnObject.registration = info.date_registration
-            returnObject.rating = info.rating
-            returnObject.warns = JSON.parse(info.list_warning)
-        }
-        return returnObject
     }
 
     async load() {

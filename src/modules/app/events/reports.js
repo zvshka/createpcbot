@@ -22,6 +22,7 @@ export default class Reports extends Event {
 
         if (reports.status) {
             const list = reports.list
+            if (!list) return
             /**
              * @type {TextChannel}
              */

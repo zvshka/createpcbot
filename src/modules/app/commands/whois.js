@@ -22,7 +22,7 @@ export default class Whois extends Command {
             const guy = await this.fetch("/getUsers_info.php", {
                 name: args.join(" ")
             })
-            if (guy.status) {
+            if (guy.status && guy.name) {
                 const inDatabase = await User.findOne({app: guy.name})
                 const embed = new MessageEmbed()
                     .setAuthor(guy.name)
@@ -32,7 +32,7 @@ export default class Whois extends Command {
             **Дата регистрации:** ${guy.registration}
             **Сборок сейчас опубликовано:** ${guy.configs}
             **Сообщений:** ${guy.messages}
-            **Видит рекламу:** ${guy.donater}
+            **Premium:** ${guy.donater ? "Нет" : "Да"}
             **Штрафов:** ${guy.warns.length > 0 ? guy.warns.reduce((a, b) => a + parseInt(b.points), 0) : 0}
             
             ${inDatabase ? `**Discord:** ${(await message.guild.members.fetch(inDatabase.discord)).displayName} (<@${inDatabase.discord}>)` : ""}`)
@@ -43,9 +43,26 @@ export default class Whois extends Command {
         } else {
             const inDatabase = await User.findOne({discord: message.author.id})
             if (inDatabase) {
-
-            } else {
-
+                const guy = await this.fetch("/getUsers_info.php", {
+                    name: inDatabase.app
+                })
+                if (guy.status && guy.name) {
+                    const embed = new MessageEmbed()
+                        .setAuthor(guy.name)
+                        .setThumbnail(guy.avatar)
+                        .setDescription(`
+            **Рейтинг:** ${guy.rating}
+            **Дата регистрации:** ${guy.registration}
+            **Сборок сейчас опубликовано:** ${guy.configs}
+            **Сообщений:** ${guy.messages}
+            **Premium:** ${guy.donater ? "Нет" : "Да"}
+            **Штрафов:** ${guy.warns.length > 0 ? guy.warns.reduce((a, b) => a + parseInt(b.points), 0) : 0}
+            
+            **Discord:** ${(await message.guild.members.fetch(inDatabase.discord)).displayName} (<@${inDatabase.discord}>)`)
+                    return message.channel.send(embed)
+                } else {
+                    return message.channel.send("Такого человека нет")
+                }
             }
         }
     }

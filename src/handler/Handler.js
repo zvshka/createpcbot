@@ -44,7 +44,7 @@ class Handler {
         this.events = new Map();
 
 
-        this.prefix = process.env.DEV ? ".." : "."
+        this.prefix = process.env.DEV ? "," : "."
     }
 
     /**
