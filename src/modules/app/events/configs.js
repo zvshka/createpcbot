@@ -48,9 +48,19 @@ export default class Configs extends Event {
         const {status, configs} = await this.fetch("/getUsers_configV2.php", {
             page,
             order: "users_config.ID DESC",
-            login: "zvshka"
+            login: process.env.LOGIN
         })
         if (!status) return []
+        const toDelete = configs.filter(cfg => cfg.Name_author === "ignatka003")
+        if (toDelete.length > 0) {
+            for (const cfg of toDelete) {
+                console.log(`[LOG] Сборка с ID: ${cfg.ID}`)
+                await this.fetch("/delete_users_config.php", {
+                    ID_CONFIG: cfg.ID,
+                    auth: true
+                });
+            }
+        }
         return this.convertConfigs(configs)
             .filter(config => parseInt(config.ID) > parseInt(lastID))
             .sort((a, b) => parseInt(a.ID) - parseInt(b.ID))

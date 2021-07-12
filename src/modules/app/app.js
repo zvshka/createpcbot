@@ -34,7 +34,7 @@ export default class extends Feature {
                 return false
             })
         const status = res.status === 200
-        return {
+        const obj = {
             status,
             ...((status && res.data.hasOwnProperty("list")) && {
                 list: res.data.list || []
@@ -56,6 +56,7 @@ export default class extends Feature {
                 }
             })())
         }
+        return obj
     }
 
     async load() {
