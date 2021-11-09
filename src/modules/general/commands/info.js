@@ -17,7 +17,7 @@ export default class InfoCommand extends Command {
         const embed = new MessageEmbed()
             .setTitle("Информация о боте")
             .addField("Префикс", this.handler.prefix, true)
-            .addField("Версия", "2.0.0", true)
+            .addField("Версия", "Пошел нахуй пидорас", true)
             .addField("Время работы", this.format(process.uptime()), true)
         await message.channel.send(embed)
     }
