@@ -5,6 +5,7 @@ const moment = require('moment-timezone');
 export default class HoursEvent extends Event {
     constructor() {
         super('ready', 'hours');
+        this.toggle()
     }
 
     async run(client) {
