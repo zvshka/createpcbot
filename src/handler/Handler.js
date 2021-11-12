@@ -1,6 +1,5 @@
 import {MessageEmbed} from "discord.js";
-
-import * as typing from "discord.js"
+import {PrismaClient} from '@prisma/client'
 
 import Event from "./Event"
 import Command from "./Command"
@@ -10,12 +9,12 @@ import Feature from "./Feature";
 class Handler {
     /**
      * @description Create a new handler instance
-     * @param {typing.Client} client - The discord.js client
+     * @param {Client} client - The discord.js client
      */
     constructor(client) {
         /**
          * The discord.js client
-         * @type {typing.Client}
+         * @type {Client}
          */
         this.client = client;
 
@@ -43,8 +42,9 @@ class Handler {
          */
         this.events = new Map();
 
+        this.db = new PrismaClient()
 
-        this.prefix = process.env.DEV ? "," : "."
+        this.prefix = process.env.DEV ? "$" : "."
     }
 
     /**
@@ -186,7 +186,7 @@ class Handler {
         }
 
         // Handle commands
-        this.client.on('message', async message => {
+        this.client.on('messageCreate', async message => {
             if (message.author.bot || !message.content.startsWith(this.prefix)) {
                 return;
             }

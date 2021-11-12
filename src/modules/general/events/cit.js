@@ -6,7 +6,7 @@ registerFont("./fonts/GoogleSans-Italic.ttf", {family: "Google Sans Italic"})
 
 export default class CitEvent extends Event {
     constructor() {
-        super('message', 'cit');
+        super('messageCreate', 'cit');
     }
 
     async run(client, message) {
