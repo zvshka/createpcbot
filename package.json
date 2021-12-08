@@ -4,7 +4,7 @@
   "description": "Create pc Bot built on classes",
   "main": "src/index.js",
   "scripts": {
-    "build": "babel ./src -d ./dist -s",
+    "build": "babel ./src -d ./dist -s && prisma generate",
     "test": "jest --passWithNoTests"
   },
   "engines": {
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.13.16",
+    "prisma": "^3.6.0",
     "@babel/core": "^7.14.0",
     "@babel/plugin-transform-runtime": "^7.13.15",
     "@babel/preset-env": "^7.14.1",
