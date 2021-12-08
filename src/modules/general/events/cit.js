@@ -1,14 +1,19 @@
 import Event from "../../../handler/Event";
-import {MessageAttachment} from "discord.js";
+import {MessageAttachment, Message} from "discord.js";
 import {createCanvas, loadImage, registerFont} from "canvas"
 registerFont("./fonts/GoogleSans-Regular.ttf", {family: "Google Sans Regular"})
 registerFont("./fonts/GoogleSans-Italic.ttf", {family: "Google Sans Italic"})
 
 export default class CitEvent extends Event {
     constructor() {
-        super('message', 'cit');
+        super('messageCreate', 'cit');
     }
 
+    /**
+     * @param client
+     * @param {Message} message
+     * @returns {Promise<*>}
+     */
     async run(client, message) {
         if (!process.env.DEV) {
             if (message.content !== "\\") return
@@ -70,7 +75,11 @@ export default class CitEvent extends Event {
         ctx.drawImage(avatar, 60, avatarY, 150, 150)
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'cit.png');
-        await message.channel.send(attachment).then(() => {
+        await message.channel.send({
+            files: [
+                attachment
+            ]
+        }).then(() => {
             console.log(`[LOG] ${message.author.tag} использовал цитату на сообщение ${ref.content} пользователя ${name}`)
         });
     }

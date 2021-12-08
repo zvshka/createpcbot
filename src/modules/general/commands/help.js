@@ -70,6 +70,10 @@ export default class HelpCommand extends Command {
                 `${description}\n(**[]** не обязательно, **<>** обязательно)`,
             );
 
-        await message.channel.send(embed);
+        await message.channel.send({
+            embeds: [
+                embed
+            ]
+        });
     }
 };

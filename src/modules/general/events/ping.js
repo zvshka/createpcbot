@@ -12,7 +12,7 @@ const answers = [
 
 export default class PingEvent extends Event {
     constructor() {
-        super('message', 'ping');
+        super('messageCreate', 'ping');
     }
 
     async run(client, message) {

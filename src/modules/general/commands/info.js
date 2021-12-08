@@ -19,7 +19,9 @@ export default class InfoCommand extends Command {
             .addField("Префикс", this.handler.prefix, true)
             .addField("Версия", "Пошел нахуй пидорас", true)
             .addField("Время работы", this.format(process.uptime()), true)
-        await message.channel.send(embed)
+        await message.channel.send({
+            embeds: [embed]
+        })
     }
 
     format(s) {
