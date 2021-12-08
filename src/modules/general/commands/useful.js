@@ -34,7 +34,9 @@ export default class UsefulCommand extends Command {
                     for (let u of useful) {
                         embed.addField(u.description, u.url, true)
                     }
-                    return message.channel.send(embed)
+                    return message.channel.send({
+                        embeds: [embed]
+                    })
                 } else {
                     const embeds = divided.map(arr => {
                         const embed = new MessageEmbed()

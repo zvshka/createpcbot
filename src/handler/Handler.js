@@ -209,21 +209,11 @@ class Handler {
             }
 
             if (cmd.adminOnly && message.author.id !== "263349725099458566" && (message.channel.type === "dm" || !message.member.permissions.has("ADMINISTRATOR"))) {
-                const embed = new MessageEmbed()
-                    .setTitle("Ошибка")
-                    .setColor("RED")
-                    .setDescription("Команда доступна только админам")
-                await message.reply(embed);
                 return;
             }
 
 
             if (cmd.guildOnly && !message.guild) {
-                const embed = new MessageEmbed()
-                    .setTitle("Ошибка")
-                    .setColor("RED")
-                    .setDescription("Команда доступна только на сервере")
-                await message.reply(embed);
                 return;
             }
 
@@ -232,19 +222,8 @@ class Handler {
                 await cmd.run(message, args);
                 console.log(`[LOG] ${message.author.tag} использовал ${cmd.name}`)
             } catch (err) {
-                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)
-                const embed = new MessageEmbed()
-                    .setTitle("Ошибка")
-                    .setColor("RED")
-                    .setDescription("Ты чё наделал блять?")
-                await message.reply(embed);
-                /**
-                 * @type {Guild}
-                 */
-                const guild = await this.client.guilds.fetch("725786415438364692")
-                const channel = await guild.channels.cache.get("836263032702107749")
-                channel.send(`Плохой человек с тегом ${message.author.tag} создал ошибку в команде \`${cmd.name}\`, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)
-            }
+                console.log(err)
+                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)}
         });
     }
 }
