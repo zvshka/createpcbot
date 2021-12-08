@@ -28,7 +28,7 @@
     "babel-preset-env": "^1.7.0",
     "canvas": "^2.7.0",
     "common-tags": "^1.8.0",
-    "discord.js": "github:discordjs/discord.js",
+    "discord.js": "13.3.1",
     "discord.js-reaction-menu": "^1.1.1",
     "module-from-string": "^3.1.2",
     "moment": "^2.29.1",
