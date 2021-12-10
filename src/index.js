@@ -1,7 +1,7 @@
 import path from "path"
 import {Client, Intents} from "discord.js";
 import {Handler} from "./handler"
-import * as mongoose from "mongoose";
+import mongoose from "mongoose";
 
 const client = new Client({
     intents: [
