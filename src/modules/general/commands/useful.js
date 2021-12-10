@@ -24,7 +24,9 @@ export default class UsefulCommand extends Command {
                     .setTitle("Ошибка")
                     .setColor("RED")
                     .setDescription("Пока полезной информации никто не добавил")
-                return message.channels.send(embed)
+                return message.channel.send({
+                    embeds: [embed]
+                })
             } else {
                 const divided = Utils.split(useful, 25)
                 if (divided.length < 2) {
@@ -47,10 +49,8 @@ export default class UsefulCommand extends Command {
                         }
                         return embed
                     })
-                    new rm.menu({
-                        channel: message.channel,
-                        userID: message.author.id,
-                        pages: embeds
+                    return message.channel.send({
+                        embeds: [embeds]
                     })
                 }
             }
@@ -60,14 +60,18 @@ export default class UsefulCommand extends Command {
                     .setTitle("Ошибка")
                     .setColor("RED")
                     .setDescription("Укажите ссылку")
-                return message.channel.send(error)
+                return message.channel.send({
+                    embeds: [error]
+                })
             }
             if (!args[2]) {
                 const error = new MessageEmbed()
                     .setTitle("Ошибка")
                     .setColor("RED")
                     .setDescription("Укажите описание")
-                return message.channel.send(error)
+                return message.channel.send({
+                    embeds: [error]
+                })
             }
             const nUseful = new Useful({
                 url: args[1],
@@ -78,7 +82,9 @@ export default class UsefulCommand extends Command {
                     .setTitle("Успешно")
                     .setColor("GREEN")
                     .setDescription("Ссылка успешно сохранена")
-                return message.channel.send(embed)
+                return message.channel.send({
+                    embeds: [embed]
+                })
             })
         }
     }
