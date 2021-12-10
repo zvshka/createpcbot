@@ -1,7 +1,7 @@
 import Command from "../../../handler/Command";
 import Useful from "../../../schemas/Useful";
 import {MessageEmbed} from "discord.js";
-import rm from "discord.js-reaction-menu"
+// import rm from "discord.js-reaction-menu"
 import Utils from "../../../Utils";
 
 export default class UsefulCommand extends Command {
@@ -13,7 +13,7 @@ export default class UsefulCommand extends Command {
             guildOnly: false,
             adminOnly: false
         });
-        this.toggle()
+        // this.toggle()
     }
 
     async run(message, args) {

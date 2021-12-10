@@ -1,6 +1,7 @@
 import path from "path"
 import {Client, Intents} from "discord.js";
 import {Handler} from "./handler"
+import * as mongoose from "mongoose";
 
 const client = new Client({
     intents: [
@@ -16,5 +17,7 @@ handler.load(path.join(__dirname, './modules'), {
     commandHandler: handler,
 });
 
-client.login(process.env.TOKEN).then(r => {
-});
+mongoose.connect(process.env.mongo).then(() => {
+    client.login(process.env.TOKEN).then(r => {
+    });
+})
