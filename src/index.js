@@ -17,7 +17,11 @@ handler.load(path.join(__dirname, './modules'), {
     commandHandler: handler,
 });
 
-mongoose.connect(process.env.mongo).then(() => {
+mongoose.connect(process.env.mongo, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: true,
+}).then(() => {
     client.login(process.env.TOKEN).then(r => {
     });
 })
