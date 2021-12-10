@@ -86,6 +86,24 @@ export default class UsefulCommand extends Command {
                     embeds: [embed]
                 })
             })
+        } else if (args[0].toLowerCase() === "remove") {
+            if (!args[1]) {
+                const error = new MessageEmbed()
+                    .setTitle("Ошибка")
+                    .setColor("RED")
+                    .setDescription("Укажите номер ссылки")
+                return message.channel.send({
+                    embeds: [error]
+                })
+            }
+            const useful = await Useful.find({}).lean(true)
+            const index = parseInt(args[1])
+            if (isNaN(args[1])) return message.channel.send("Пошел нахуй, число укажи")
+            if (index < 0 || index > useful.length) return message.channel.send(`Ебнутый, укажи от 1 до ${useful.length}`)
+            await Useful.deleteOne({
+                url: useful[index - 1].url
+            }).then(() => message.channel.send("Удалил блять, доволен?"))
         }
+
     }
 };
