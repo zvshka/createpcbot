@@ -50,7 +50,7 @@ export default class UsefulCommand extends Command {
                         return embed
                     })
                     return message.channel.send({
-                        embeds: [embeds]
+                        embeds
                     })
                 }
             }
