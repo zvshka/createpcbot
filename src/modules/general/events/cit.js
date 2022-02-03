@@ -32,7 +32,7 @@ export default class CitEvent extends Event {
         const content = ref.content.trim()
         for (let [id, user] of ref.mentions.users) {
             const member = ref.guild.members.cache.get(id)
-            content.replace(`<@!${id}>`, member ? `@${member.displayName}` : `@${user.username}`)
+            content.replace(`<@${id}>`, member ? `@${member.displayName}` : `@${user.username}`)
         }
 
         const text = "«" + content + "»."
