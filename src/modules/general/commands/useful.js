@@ -13,7 +13,7 @@ export default class UsefulCommand extends Command {
             guildOnly: false,
             adminOnly: false
         });
-        // this.toggle()
+        this.toggle()
     }
 
     async run(message, args) {

@@ -29,7 +29,13 @@ export default class CitEvent extends Event {
         const member = await message.guild.members.fetch(ref.author.id).catch(_ => {})
         const name = member ? member.displayName : ref.author.username
 
-        const text = "«" + ref.content.trim() + "»."
+        const content = ref.content.trim()
+        for (let [id, user] of ref.mentions.users) {
+            const member = ref.guild.members.cache.get(id)
+            content.replace(`<@!${id}>`, member ? `@${member.displayName}` : `@${user.username}`)
+        }
+
+        const text = "«" + content + "»."
         const lines = text.split("\n").map(row => this.getLines(textCtx, row, 880, '52px "Google Sans Italic"')).flat()
         const width = 1000
         const height = 35 + 66 + 54 + this.calcHeight(lines) + 60 + 150 + 60
