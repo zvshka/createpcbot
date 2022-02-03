@@ -29,10 +29,10 @@ export default class CitEvent extends Event {
         const member = await message.guild.members.fetch(ref.author.id).catch(_ => {})
         const name = member ? member.displayName : ref.author.username
 
-        const content = ref.content.trim()
+        let content = ref.content.trim()
         for (let [id, user] of ref.mentions.users) {
             const member = ref.guild.members.cache.get(id)
-            content.replace(`<@${id}>`, member ? `@${member.displayName}` : `@${user.username}`)
+            content = content.replaceAll(`<@${id}>`, member ? `@${member.displayName}` : `@${user.username}`)
         }
 
         const text = "«" + content + "»."
