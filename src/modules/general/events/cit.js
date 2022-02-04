@@ -15,11 +15,8 @@ export default class CitEvent extends Event {
      * @returns {Promise<*>}
      */
     async run(client, message) {
-        if (!process.env.DEV) {
-            if (message.content !== "\\") return
-        } else {
-            if (message.content !== "/") return
-        }
+        if (process.env.DEV && message.content !== "/") return
+        else if (message.content !== "\\") return
 
         const ref = await message.fetchReference().catch(e => {})
         if (!ref) return message.channel.send("Лэээ, кого цитировать то")
@@ -82,6 +79,12 @@ export default class CitEvent extends Event {
         ctx.drawImage(avatar, 60, avatarY, 150, 150)
 
         const attachment = new MessageAttachment(canvas.toBuffer(), 'cit.png');
+        const quotes = await client.channels.fetch("938428979310903317")
+        await quotes.send({
+            files: [
+                attachment
+            ]
+        })
         await message.channel.send({
             files: [
                 attachment
