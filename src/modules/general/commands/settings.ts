@@ -57,7 +57,7 @@ export default class SettingsCommand extends Command {
                             id: message.guildId
                         },
                         data: {
-                            [key]: null
+                            [key]: undefined
                         }
                     })
                 }
