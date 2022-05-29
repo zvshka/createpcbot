@@ -16,6 +16,7 @@ handler.load(path.join(__dirname, './modules'), {
     commandHandler: handler,
 }).then(res => {
     client.login(process.env.TOKEN).then(r => {
+        console.log("[DONE] Загружен!")
     });
 });
 

@@ -7,14 +7,14 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
+    "rootDir": "src",
     "baseUrl": "./",
     "diagnostics": true,
     "skipLibCheck": true,
-    "allowJs": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "incremental": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "incremental": false,
     "resolveJsonModule": true,
     "isolatedModules": true
   },
@@ -22,6 +22,8 @@
     "src/**/*"
   ],
   "exclude": [
+    "dist",
+    ".idea",
     "node_modules"
   ]
 }

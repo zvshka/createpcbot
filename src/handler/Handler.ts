@@ -1,10 +1,10 @@
-import {Client, MessageEmbed} from "discord.js";
-import {PrismaClient} from '@prisma/client'
+import {Client} from "discord.js";
 
 import Event from "./Event"
 import Command from "./Command"
 import Utils from "../Utils"
 import Feature from "./Feature";
+import prisma from "../lib/prisma";
 
 class Handler {
     public client: Client;
@@ -15,11 +15,12 @@ class Handler {
     public prefix: string
     public directory: string
     public dependencies: any
+
     /**
      * @description Create a new handler instance
      * @param {Client} client - The discord.js client
      */
-    constructor(client) {
+    constructor(client: Client) {
         /**
          * The discord.js client
          * @type {Client}
@@ -49,8 +50,6 @@ class Handler {
          * @type {Map<string, Array<Event>>}
          */
         this.events = new Map();
-
-        this.prefix = process.env.DEV ? "$" : "."
     }
 
     /**
@@ -194,13 +193,23 @@ class Handler {
 
         // Handle commands
         this.client.on('messageCreate', async message => {
-            if (message.author.bot || !message.content.startsWith(this.prefix)) {
+            const guildSettings = await prisma.guild.upsert({
+                where: {
+                    id: message.guildId
+                },
+                create: {
+                    id: message.guildId
+                },
+                update: {}
+            })
+            const prefix = process.env.DEV ? "$" : guildSettings.prefix
+            if (message.author.bot || !message.content.startsWith(prefix)) {
                 return;
             }
 
             // Remove prefix and split message into command and args
             const [command, ...args] = message.content
-                .slice(this.prefix.length)
+                .slice(prefix.length)
                 .split(' ');
 
             let cmd = this.commands.get(command.toLowerCase());
@@ -230,7 +239,8 @@ class Handler {
                 console.log(`[LOG] ${message.author.tag} использовал ${cmd.name}`)
             } catch (err) {
                 console.log(err)
-                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)}
+                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)
+            }
         });
     }
 }

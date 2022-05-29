@@ -1,7 +1,8 @@
 import {MessageEmbed} from "discord.js";
-import Command from "../../../handler/Command";
+import {Command, Handler} from "../../../handler";
 
 export default class InfoCommand extends Command {
+    private handler: Handler;
     constructor({commandHandler}) {
         super('info', {
             aliases: ['i'],

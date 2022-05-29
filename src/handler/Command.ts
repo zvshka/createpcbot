@@ -5,9 +5,9 @@ class Command extends Toggleable {
     public name: string;
     public aliases: string[];
     public info: string;
-    private usage: string;
-    guildOnly: boolean;
-    adminOnly: boolean;
+    public usage: string;
+    public guildOnly: boolean;
+    public adminOnly: boolean;
     /**
      * @description Create a new command
      * @param {string} name - The name of the command

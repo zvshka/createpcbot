@@ -11,13 +11,19 @@ datasource db {
 }
 
 model Guild {
-  id     String @id
-  prefix String
+  id             String  @id
+  prefix         String  @default(".")
+  quotes_channel String?
+  quotes_prefix  String? @default("\\")
+
+  answers PingAnswer[]
 }
 
-model Command {
-  id        Int    @id @default(autoincrement())
-  code      Bytes
-  file_name String @db.VarChar(40) @unique
-  name      String @unique
+model PingAnswer {
+
+  id   Int    @id @default(autoincrement())
+  text String
+
+  guild   Guild  @relation(fields: [guildId], references: [id])
+  guildId String
 }

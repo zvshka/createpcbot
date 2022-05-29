@@ -1,8 +1,10 @@
 import {MessageEmbed} from "discord.js";
-import Command from "../../../handler/Command";
 import Utils from "../../../Utils";
+import {Command, Handler} from "../../../handler";
+import prisma from "../../../lib/prisma";
 
 export default class HelpCommand extends Command {
+    private commandHandler: Handler;
     constructor({commandHandler}) {
         super('help', {
             aliases: ['h', 'commands', 'cmds'],
@@ -16,7 +18,12 @@ export default class HelpCommand extends Command {
     }
 
     async run(message, args) {
-        const prefix = this.commandHandler.prefix;
+        const guildSettings = await prisma.guild.findUnique({
+            where: {
+                id: message.guildId
+            }
+        })
+        const prefix = process.env.DEV ? "$" : guildSettings.prefix
         let description;
 
         if (args.length === 0) {
