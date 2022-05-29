@@ -1,7 +1,6 @@
 import path from "path"
 import {Client, Intents} from "discord.js";
-import {Handler} from "./handler"
-import mongoose from "mongoose";
+import {Handler} from "./handler";
 
 const client = new Client({
     intents: [
@@ -15,13 +14,16 @@ const handler = new Handler(client);
 handler.load(path.join(__dirname, './modules'), {
     client,
     commandHandler: handler,
-});
-
-mongoose.connect(process.env.mongo, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: true,
-}).then(() => {
+}).then(res => {
     client.login(process.env.TOKEN).then(r => {
     });
-})
+});
+
+// mongoose.connect(process.env.mongo, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: true,
+// }).then(() => {
+//     client.login(process.env.TOKEN).then(r => {
+//     });
+// })

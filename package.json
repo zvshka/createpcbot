@@ -2,9 +2,9 @@
   "name": "createpcbot-classed",
   "version": "1.0.0",
   "description": "Create pc Bot built on classes",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "babel ./src -d ./dist -s && prisma generate",
+    "build": "tsc --build",
     "test": "jest --passWithNoTests"
   },
   "engines": {
@@ -21,31 +21,20 @@
   },
   "homepage": "https://github.com/zvshka/createpcbot#readme",
   "dependencies": {
-    "@babel/runtime": "^7.14.0",
-    "@prisma/client": "^3.4.2",
-    "async": "^3.2.0",
-    "axios": "^0.24.0",
-    "babel-preset-env": "^1.7.0",
-    "canvas": "^2.9.0",
-    "common-tags": "^1.8.0",
-    "discord.js": "13.6.0",
-    "discord.js-reaction-menu": "^1.1.1",
-    "module-from-string": "^3.1.2",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.33",
-    "mongoose": "^5.12.5",
-    "ms": "^2.1.2",
-    "parse-ms": "2.1.0",
-    "terser": "^5.9.0"
+    "@prisma/client": "^3.14.0",
+    "axios": "^0.27.2",
+    "canvas": "^2.9.1",
+    "common-tags": "^1.8.2",
+    "discord.js": "^13.7.0",
+    "module-from-string": "^3.1.4",
+    "moment": "^2.29.3",
+    "moment-timezone": "^0.5.34",
+    "ms": "^2.1.3",
+    "parse-ms": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.16",
-    "prisma": "^3.6.0",
-    "@babel/core": "^7.14.0",
-    "@babel/plugin-transform-runtime": "^7.13.15",
-    "@babel/preset-env": "^7.14.1",
-    "@babel/register": "^7.13.16",
-    "@types/jest": "^26.0.23",
-    "jest": "^26.6.3"
+    "typescript": "^4.7.2",
+    "ts-node": "^10.8.0",
+    "prisma": "^3.14.0"
   }
 }

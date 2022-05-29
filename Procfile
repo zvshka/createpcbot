@@ -1,1 +1,1 @@
-worker: node --experimental-vm-modules dist/index.js
+worker: node --experimental-vm-modules dist/index.ts

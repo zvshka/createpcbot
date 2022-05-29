@@ -1,6 +1,13 @@
 import Toggleable from "./Toggleable"
+import {Message} from "discord.js";
 
 class Command extends Toggleable {
+    public name: string;
+    public aliases: string[];
+    public info: string;
+    private usage: string;
+    guildOnly: boolean;
+    adminOnly: boolean;
     /**
      * @description Create a new command
      * @param {string} name - The name of the command
@@ -50,7 +57,7 @@ class Command extends Toggleable {
     /**
      * @description Method that runs when the command is executed
      */
-    run() {
+    run(message: Message, args?: string[]) {
         throw new Error(`Command '${this.name}' is missing run method`);
     }
 }

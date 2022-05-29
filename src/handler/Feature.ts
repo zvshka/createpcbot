@@ -2,6 +2,9 @@ import Event from "./Event"
 import Command from "./Command"
 import Toggleable from "./Toggleable"
 class Feature extends Toggleable {
+    public commands: Command[];
+    public name: string;
+    public events: Event[];
     /**
      * @description Create a new Feature
      * @param {string} name - The name of this Feature
