@@ -53,12 +53,24 @@ export default class SettingsCommand extends Command {
                         data
                     })
                 } else if (args[0] === "remove") {
+                    let def
+                    switch (key) {
+                        case "quotes_prefix":
+                            def = "\\"
+                            break
+                        case "prefix":
+                            def = "."
+                            break
+                        case "quotes_channel":
+                            def = null
+                            break
+                    }
                     await prisma.guild.update({
                         where: {
                             id: message.guildId
                         },
                         data: {
-                            [key]: null
+                            [key]: def
                         }
                     })
                 }

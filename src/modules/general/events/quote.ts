@@ -19,10 +19,14 @@ export default class CitEvent extends Event {
      */
     async run(client, message: Message) {
         console.log(`[MESSAGE] ${message.guild.name} (${message.guild.id}) ${message.author.username}: ${message.content}`)
-        const guildSettings = await prisma.guild.findUnique({
+        const guildSettings = await prisma.guild.upsert({
             where: {
                 id: message.guildId
-            }
+            },
+            create: {
+                id: message.guildId
+            },
+            update: {}
         })
         if ((process.env.DEV && message.content === "/" ) || message.content === guildSettings.quotes_prefix) {
             const ref = await message.fetchReference().catch(e => {})
