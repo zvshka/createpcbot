@@ -8,8 +8,8 @@ export default class SettingsCommand extends Command {
             adminOnly: true,
             aliases: [],
             guildOnly: true,
-            info: "",
-            usage: ""
+            info: "настройки",
+            usage: "settings"
         });
     }
 
@@ -42,7 +42,7 @@ export default class SettingsCommand extends Command {
                         }
                     } else {
                         data = {
-                            [key.toLowerCase()]: args.splice(0, 2).join(" ")
+                            [key.toLowerCase()]: args.splice(2).join(" ")
                         }
                     }
                     await prisma.guild.update({
