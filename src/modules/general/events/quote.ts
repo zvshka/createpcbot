@@ -7,7 +7,7 @@ registerFont("./fonts/GoogleSans-Italic.ttf", {family: "Google Sans Italic"})
 
 import prisma from "../../../lib/prisma";
 
-export default class CitEvent extends Event {
+export default class QuoteEvent extends Event {
     constructor() {
         super('messageCreate', 'quotes');
     }
@@ -28,7 +28,8 @@ export default class CitEvent extends Event {
             },
             update: {}
         })
-        if ((process.env.DEV && message.content === "/" ) || message.content === guildSettings.quotes_prefix) {
+        if ((process.env.DEV && message.content === "/" ) ||
+            (message.content === (guildSettings?.quotes_prefix || "\\" ))) {
             const ref = await message.fetchReference().catch(e => {})
             if (!ref) return message.channel.send("Лэээ, кого цитировать то")
             if (ref.content.length < 1) return message.channel.send("Лэээ, текст дай")
