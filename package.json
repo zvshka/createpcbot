@@ -4,7 +4,7 @@
   "description": "Create pc Bot built on classes",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --build . && && prisma generate",
+    "build": "tsc --build && prisma generate",
     "test": "jest --passWithNoTests"
   },
   "engines": {
