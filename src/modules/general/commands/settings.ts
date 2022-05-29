@@ -1,6 +1,7 @@
 import {Command} from "../../../handler";
 import {Message, MessageEmbed} from "discord.js";
 import prisma from "../../../lib/prisma";
+import {PrismaClient} from "@prisma/client";
 
 export default class SettingsCommand extends Command {
     constructor() {
@@ -24,7 +25,7 @@ export default class SettingsCommand extends Command {
             const embed = new MessageEmbed()
                 .setTitle("Настройки сервера")
                 .addField("Префикс", guildSettings.prefix)
-                .addField("кАнал с цитатами", quotesChannel.name)
+                .addField("кАнал с цитатами", quotesChannel.name || "Не установлен")
                 .addField("Префикс цитат", guildSettings.quotes_prefix)
 
             return message.channel.send({
@@ -57,7 +58,7 @@ export default class SettingsCommand extends Command {
                             id: message.guildId
                         },
                         data: {
-                            [key]: undefined
+                            [key]: null
                         }
                     })
                 }

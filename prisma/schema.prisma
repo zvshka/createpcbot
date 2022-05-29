@@ -14,7 +14,7 @@ model Guild {
   id             String  @id
   prefix         String  @default(".")
   quotes_channel String?
-  quotes_prefix  String? @default("\\")
+  quotes_prefix  String @default("\\")
 
   answers PingAnswer[]
 }
