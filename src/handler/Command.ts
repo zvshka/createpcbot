@@ -1,6 +1,14 @@
 import Toggleable from "./Toggleable"
 import {Message} from "discord.js";
 
+interface IOptions {
+    aliases: string[]
+    info: string
+    usage: string
+    guildOnly: boolean
+    adminOnly: boolean
+}
+
 class Command extends Toggleable {
     public name: string;
     public aliases: string[];
@@ -18,7 +26,7 @@ class Command extends Toggleable {
      * @param {boolean} [options.guildOnly] - Whether the command can only be used inside a guild
      * @param {boolean} [options.adminOnly] - Whether the command can only be used by Admin
      */
-    constructor(name, options) {
+    constructor(name, options: IOptions) {
         super();
 
         this.name = name;
