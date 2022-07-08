@@ -40,6 +40,11 @@ export default class SettingsCommand extends Command {
                         data = {
                             quotes_channel: message.mentions.channels.first().id
                         }
+                    } else if (key === "welcome_channel") {
+                        if (!message.mentions.channels.first()) return message.channel.send("Ну ты канал то укажи текстовый")
+                        data = {
+                            welcome_channel: message.mentions.channels.first().id
+                        }
                     } else {
                         data = {
                             [key.toLowerCase()]: args.splice(0, 2).join(" ")
@@ -60,6 +65,19 @@ export default class SettingsCommand extends Command {
                             [key]: null
                         }
                     })
+                } else if (args[0] === "add") {
+                    if (key === "welcomeImages") {
+                        await prisma.welcomeImage.create({
+                            data: {
+                                url: args[2],
+                                guild: {
+                                    connect: {
+                                        id: message.guildId
+                                    }
+                                }
+                            }
+                        })
+                    }
                 }
                 return message.channel.send("Ну я типо обновил")
             } else {
