@@ -1,7 +1,6 @@
 import {Command} from "../../../handler";
 import {Message, MessageEmbed} from "discord.js";
 import prisma from "../../../lib/prisma";
-import {PrismaClient} from "@prisma/client";
 
 export default class SettingsCommand extends Command {
     constructor() {
@@ -23,6 +22,9 @@ export default class SettingsCommand extends Command {
                 welcomeImages: true
             }
         })
+
+        if (message.member.permissions.has("ADMINISTRATOR") || message.author.id === "263349725099458566") return
+
         if (args.length === 0) {
             const quotesChannel = await message.guild.channels.fetch(guildSettings.quotes_channel)
             const embed = new MessageEmbed()
