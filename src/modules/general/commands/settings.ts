@@ -1,6 +1,7 @@
 import {Command} from "../../../handler";
 import {Message, MessageEmbed} from "discord.js";
 import prisma from "../../../lib/prisma";
+import {PrismaClient} from "@prisma/client";
 
 export default class SettingsCommand extends Command {
     constructor() {
@@ -8,8 +9,8 @@ export default class SettingsCommand extends Command {
             adminOnly: true,
             aliases: [],
             guildOnly: true,
-            info: "",
-            usage: ""
+            info: "настройки",
+            usage: "settings"
         });
     }
 
@@ -24,7 +25,7 @@ export default class SettingsCommand extends Command {
             const embed = new MessageEmbed()
                 .setTitle("Настройки сервера")
                 .addField("Префикс", guildSettings.prefix)
-                .addField("кАнал с цитатами", quotesChannel.name)
+                .addField("кАнал с цитатами", quotesChannel.name || "Не установлен")
                 .addField("Префикс цитат", guildSettings.quotes_prefix)
 
             return message.channel.send({
@@ -47,7 +48,7 @@ export default class SettingsCommand extends Command {
                         }
                     } else {
                         data = {
-                            [key.toLowerCase()]: args.splice(0, 2).join(" ")
+                            [key.toLowerCase()]: args.splice(2).join(" ")
                         }
                     }
                     await prisma.guild.update({
@@ -57,12 +58,24 @@ export default class SettingsCommand extends Command {
                         data
                     })
                 } else if (args[0] === "remove") {
+                    let def
+                    switch (key) {
+                        case "quotes_prefix":
+                            def = "\\"
+                            break
+                        case "prefix":
+                            def = "."
+                            break
+                        case "quotes_channel":
+                            def = null
+                            break
+                    }
                     await prisma.guild.update({
                         where: {
                             id: message.guildId
                         },
                         data: {
-                            [key]: null
+                            [key]: def
                         }
                     })
                 } else if (args[0] === "add") {
