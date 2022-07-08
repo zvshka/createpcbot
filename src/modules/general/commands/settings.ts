@@ -18,6 +18,9 @@ export default class SettingsCommand extends Command {
         const guildSettings = await prisma.guild.findUnique({
             where: {
                 id: message.guildId
+            },
+            include: {
+                welcomeImages: true
             }
         })
         if (args.length === 0) {
