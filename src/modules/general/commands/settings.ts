@@ -37,9 +37,7 @@ export default class SettingsCommand extends Command {
                 embeds: [embed]
             })
         } else {
-            console.log(args)
             const key = args[1]
-            console.log(key in guildSettings)
             if (key in guildSettings) {
                 let data;
                 if (args[0] === "set") {
