@@ -23,6 +23,7 @@ export default class SettingsCommand extends Command {
             }
         })
 
+        console.log(message.member.permissions.has("ADMINISTRATOR"), message.author.id !== "263349725099458566")
         if (!message.member.permissions.has("ADMINISTRATOR") || message.author.id !== "263349725099458566") return
 
         if (args.length === 0) {
