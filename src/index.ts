@@ -1,6 +1,8 @@
 import path from "path"
 import {Client, Intents} from "discord.js";
 import {Handler} from "./handler";
+import dotenv from "dotenv"
+dotenv.config()
 
 const client = new Client({
     intents: [
@@ -19,12 +21,3 @@ handler.load(path.join(__dirname, './modules'), {
         console.log("[DONE] Загружен!")
     });
 });
-
-// mongoose.connect(process.env.mongo, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useFindAndModify: true,
-// }).then(() => {
-//     client.login(process.env.TOKEN).then(r => {
-//     });
-// })
