@@ -29,6 +29,7 @@ export default class PingEvent extends Event {
             .setImage(url)
 
         return welcomeChannel.send({
+            content: member.toString(),
             embeds: [welcomeEmbed]
         })
     }
