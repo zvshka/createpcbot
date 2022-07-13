@@ -1,4 +1,5 @@
 class Toggleable {
+  isEnabled: boolean;
   constructor() {
     this.isEnabled = true;
   }

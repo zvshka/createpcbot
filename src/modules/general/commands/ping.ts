@@ -1,5 +1,5 @@
 import {stripIndents} from "common-tags";
-import Command from "../../../handler/Command";
+import {Command} from "../../../handler";
 
 export default class PingCommand extends Command {
     constructor() {

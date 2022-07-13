@@ -1,4 +1,4 @@
-import Command from "../../../handler/Command";
+import {Command} from "../../../handler";
 
 export default class ErrorCommand extends Command {
     constructor() {

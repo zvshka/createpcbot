@@ -1,17 +1,26 @@
-import {MessageEmbed} from "discord.js";
-import {PrismaClient} from '@prisma/client'
+import {Client} from "discord.js";
 
 import Event from "./Event"
 import Command from "./Command"
 import Utils from "../Utils"
 import Feature from "./Feature";
+import prisma from "../lib/prisma";
 
 class Handler {
+    public client: Client;
+    public features: Map<string, Feature>
+    public commands: Map<string, Command>
+    public events: Map<string, Event[]>
+    public aliases: Map<string, Command>
+    public prefix: string
+    public directory: string
+    public dependencies: any
+
     /**
      * @description Create a new handler instance
      * @param {Client} client - The discord.js client
      */
-    constructor(client) {
+    constructor(client: Client) {
         /**
          * The discord.js client
          * @type {Client}
@@ -41,10 +50,6 @@ class Handler {
          * @type {Map<string, Array<Event>>}
          */
         this.events = new Map();
-
-        this.db = new PrismaClient()
-
-        this.prefix = process.env.DEV ? "$" : "."
     }
 
     /**
@@ -175,10 +180,11 @@ class Handler {
                         try {
                             handler.run(this.client, ...params);
                         } catch (err) {
-                            this.client.guilds.fetch("725786415438364692").then(guild => {
-                                const channel = guild.channels.cache.get("836263032702107749")
-                                channel.send(`Плохой человек создал ошибку, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)
-                            })
+                            console.log(`[ERROR] ${err}`)
+                            // this.client.guilds.fetch("725786415438364692").then(guild => {
+                            //     const channel = guild.channels.cache.get("836263032702107749")
+                            //     channel.send(`Плохой человек создал ошибку, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)
+                            // })
                         }
                     }
                 }
@@ -187,13 +193,23 @@ class Handler {
 
         // Handle commands
         this.client.on('messageCreate', async message => {
-            if (message.author.bot || !message.content.startsWith(this.prefix)) {
+            const guildSettings = await prisma.guild.upsert({
+                where: {
+                    id: message.guildId
+                },
+                create: {
+                    id: message.guildId
+                },
+                update: {}
+            })
+            const prefix = process.env.DEV ? "$" : guildSettings.prefix
+            if (message.author.bot || !message.content.startsWith(prefix)) {
                 return;
             }
 
             // Remove prefix and split message into command and args
             const [command, ...args] = message.content
-                .slice(this.prefix.length)
+                .slice(prefix.length)
                 .split(' ');
 
             let cmd = this.commands.get(command.toLowerCase());
@@ -208,7 +224,7 @@ class Handler {
                 return;
             }
 
-            if (cmd.adminOnly && message.author.id !== "263349725099458566" && (message.channel.type === "dm" || !message.member.permissions.has("ADMINISTRATOR"))) {
+            if (cmd.adminOnly && message.author.id !== "263349725099458566" && (message.channel.type === "DM" || !message.member.permissions.has("ADMINISTRATOR"))) {
                 return;
             }
 
@@ -223,7 +239,8 @@ class Handler {
                 console.log(`[LOG] ${message.author.tag} использовал ${cmd.name}`)
             } catch (err) {
                 console.log(err)
-                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)}
+                console.log(`[ERROR] ${message.author.tag} использовал ${cmd.name} и что то сломал`)
+            }
         });
     }
 }
