@@ -25,7 +25,10 @@ export default class PingEvent extends Event {
         if (!welcomeChannel || welcomeChannel.type !== "GUILD_TEXT") return
         const welcomeEmbed = new MessageEmbed()
             .setTitle(member.guild.name)
-        if (guildSettings.welcomeImages.length > 1) {
+
+        console.log(guildSettings)
+
+        if (guildSettings.welcomeImages.length >= 1) {
             // Тут рандомайз                          Целое          Рандом значение умножаем на кол-во элементов массива
             const {url, isApi, pathToImage} = guildSettings.welcomeImages[Math.floor(Math.random() * guildSettings.welcomeImages.length)]
             if (isApi) {
@@ -39,9 +42,8 @@ export default class PingEvent extends Event {
             } else {
                 welcomeEmbed.setImage(url)
             }
-
         }
-        if (guildSettings.welcomeMessages.length > 1) {
+        if (guildSettings.welcomeMessages.length >= 1) {
             const {text} = guildSettings.welcomeMessages[Math.floor(Math.random() * guildSettings.welcomeMessages.length)]
             welcomeEmbed
                 .setDescription(text?.replace("{user}", member.toString()))
