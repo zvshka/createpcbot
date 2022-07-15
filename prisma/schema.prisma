@@ -28,6 +28,9 @@ model WelcomeImage {
   id  Int    @id @default(autoincrement())
   url String
 
+  isApi Boolean? @default(false)
+  pathToImage String?
+
   guild   Guild  @relation(fields: [guildId], references: [id])
   guildId String
 }

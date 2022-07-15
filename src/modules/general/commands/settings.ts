@@ -86,16 +86,31 @@ export default class SettingsCommand extends Command {
                     })
                 } else if (args[0] === "add") {
                     if (key === "welcomeImages") {
-                        await prisma.welcomeImage.create({
-                            data: {
-                                url: args[2],
-                                guild: {
-                                    connect: {
-                                        id: message.guildId
+                        if (args[2].toLowerCase() === "api") {
+                            await prisma.welcomeImage.create({
+                                data: {
+                                    url: args[4],
+                                    isApi: true,
+                                    pathToImage: args[3],
+                                    guild: {
+                                        connect: {
+                                            id: message.guildId
+                                        }
                                     }
                                 }
-                            }
-                        })
+                            })
+                        } else {
+                            await prisma.welcomeImage.create({
+                                data: {
+                                    url: args[2],
+                                    guild: {
+                                        connect: {
+                                            id: message.guildId
+                                        }
+                                    }
+                                }
+                            })
+                        }
                     } else if (key === "welcomeMessages") {
                         if (!args[2]) return message.channel.send("Ну ты вафля, введи нормальное сообщение")
                         await prisma.welcomeMessage.create({

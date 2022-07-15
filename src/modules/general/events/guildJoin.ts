@@ -2,6 +2,7 @@ import {Event} from "../../../handler";
 import {GuildMember, Message, MessageEmbed} from "discord.js";
 
 import prisma from "../../../lib/prisma";
+import axios from "axios";
 
 export default class PingEvent extends Event {
     constructor() {
@@ -26,8 +27,19 @@ export default class PingEvent extends Event {
             .setTitle(member.guild.name)
         if (guildSettings.welcomeImages.length > 1) {
             // Тут рандомайз                          Целое          Рандом значение умножаем на кол-во элементов массива
-            const {url} = guildSettings.welcomeImages[Math.floor(Math.random() * guildSettings.welcomeImages.length)]
-            welcomeEmbed.setImage(url)
+            const {url, isApi, pathToImage} = guildSettings.welcomeImages[Math.floor(Math.random() * guildSettings.welcomeImages.length)]
+            if (isApi) {
+                const data = await axios.get(url).then(res => res.data)
+                const keys = pathToImage.split(".")
+                let info = data
+                for (let key of keys) {
+                    info = info[key]
+                }
+                welcomeEmbed.setImage(info)
+            } else {
+                welcomeEmbed.setImage(url)
+            }
+
         }
         if (guildSettings.welcomeMessages.length > 1) {
             const {text} = guildSettings.welcomeMessages[Math.floor(Math.random() * guildSettings.welcomeMessages.length)]
