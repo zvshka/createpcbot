@@ -19,7 +19,8 @@ export default class SettingsCommand extends Command {
                 id: message.guildId
             },
             include: {
-                welcomeImages: true
+                welcomeImages: true,
+                welcomeMessages: true
             }
         })
 
