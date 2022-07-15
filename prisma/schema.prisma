@@ -6,28 +6,35 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Guild {
-  id             String         @id
-  prefix         String         @default(".")
-  quotes_channel String?
-  quotes_prefix  String?        @default("\\")
-
+  id              String  @id
+  prefix          String  @default(".")
+  quotes_channel  String?
+  quotes_prefix   String? @default("\\")
   welcome_channel String?
-  welcome_message String?
 
-  welcomeImages  WelcomeImage[]
-  answers        PingAnswer[]
+  welcomeImages   WelcomeImage[]
+  answers         PingAnswer[]
+  welcomeMessages WelcomeMessage[]
 }
 
 model WelcomeImage {
 
-  id      Int    @id @default(autoincrement())
-  url     String
+  id  Int    @id @default(autoincrement())
+  url String
 
+  guild   Guild  @relation(fields: [guildId], references: [id])
+  guildId String
+}
+
+model WelcomeMessage {
+  id      Int    @id @default(autoincrement())
+  text    String
   guild   Guild  @relation(fields: [guildId], references: [id])
   guildId String
 }

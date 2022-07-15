@@ -95,6 +95,18 @@ export default class SettingsCommand extends Command {
                                 }
                             }
                         })
+                    } else if (key === "welcomeMessages") {
+                        if (!args[2]) return message.channel.send("Ну ты вафля, введи нормальное сообщение")
+                        await prisma.welcomeMessage.create({
+                            data: {
+                                text: args.splice(0, 2).join(" "),
+                                guild: {
+                                    connect: {
+                                        id: message.guildId
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
                 return message.channel.send("Ну я типо обновил")
