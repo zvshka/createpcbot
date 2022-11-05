@@ -37,7 +37,7 @@ export default class QuoteEvent extends Event {
 
     const isTriggeredDev = process.env.DEV && args[0] === "/"
     const isTriggered = args[0] === (guildSettings?.quotes_prefix || "\\")
-    if (isTriggered) {
+    if (process.env.DEV ? isTriggeredDev : isTriggered) {
       if (flagsSet.has("--seq")) {
         if (flagsSet.has("--reset")) {
           return this.sequence.delete(message.author.id)
@@ -192,7 +192,8 @@ export default class QuoteEvent extends Event {
           // OLD
           // ctx.fillText(lines[i], 60, y)
           // NEW
-          await fillWithEmoji(ctx, lines[i], 60, y)
+          const line = lines[i]
+          await fillWithEmoji(ctx, line.length > 0 ? line : " ", 60, y)
         }
 
         if (!flagsSet.has("--noauthor")) {
