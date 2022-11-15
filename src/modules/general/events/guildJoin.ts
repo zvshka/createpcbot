@@ -10,6 +10,7 @@ export default class PingEvent extends Event {
     }
 
     async run(client, member: GuildMember) {
+        if (process.env.DEV) return
         const guildSettings = await prisma.guild.findUnique({
             where: {
                 id: member.guild.id

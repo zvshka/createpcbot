@@ -65,7 +65,7 @@ class Handler {
         // Find and require all JavaScript files
         const nodes = await Promise.all(
             Utils.readdirSyncRecursive(directory)
-                .filter(file => file.endsWith('.js'))
+                .filter(file => file.endsWith(process.env.DEV ? '.ts' : '.js'))
                 .map(async file => (await import(file)).default)
         )
 

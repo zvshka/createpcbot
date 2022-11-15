@@ -11,16 +11,30 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+model StarredMessage {
+  guild            Guild  @relation(fields: [guildId], references: [id])
+  guildId          String
+  starredMessageId String
+  botMessageId     String
+
+  @@id([guildId, starredMessageId])
+}
+
 model Guild {
-  id              String  @id
-  prefix          String  @default(".")
-  quotes_channel  String?
-  quotes_prefix   String? @default("\\")
-  welcome_channel String?
+  id                String  @id
+  prefix            String  @default(".")
+  quotes_channel    String?
+  quotes_prefix     String? @default("\\")
+  welcome_channel   String?
+
+  starboard_channel String?
+  starboard_emoji   String? @default("⭐")
+  starboard_count   Int @default(3)
 
   welcomeImages   WelcomeImage[]
   answers         PingAnswer[]
   welcomeMessages WelcomeMessage[]
+  starredMessages StarredMessage[]
 }
 
 model WelcomeImage {
@@ -28,7 +42,7 @@ model WelcomeImage {
   id  Int    @id @default(autoincrement())
   url String
 
-  isApi Boolean? @default(false)
+  isApi       Boolean? @default(false)
   pathToImage String?
 
   guild   Guild  @relation(fields: [guildId], references: [id])

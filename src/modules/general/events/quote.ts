@@ -21,7 +21,6 @@ export default class QuoteEvent extends Event {
    * @returns {Promise<*>}
    */
   async run(client, message: Message) {
-    console.log(`[MESSAGE] ${message.guild.name} (${message.guild.id}) ${message.author.username}: ${message.content}`)
     const guildSettings = await prisma.guild.upsert({
       where: {
         id: message.guildId

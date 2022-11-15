@@ -29,10 +29,11 @@ export default class SettingsCommand extends Command {
         if (args.length === 0) {
             const quotesChannel = await message.guild.channels.fetch(guildSettings.quotes_channel)
             const embed = new MessageEmbed()
-                .setTitle("Настройки сервера")
-                .addField("Префикс", guildSettings.prefix)
-                .addField("кАнал с цитатами", quotesChannel.name || "Не установлен")
-                .addField("Префикс цитат", guildSettings.quotes_prefix)
+            for (let key in guildSettings) {
+                if (guildSettings[key] && guildSettings[key] instanceof Array) continue
+                const value = `${guildSettings[key] || 'None'}`
+                embed.addField(key, String.raw`${value}`, true)
+            }
 
             return message.channel.send({
                 embeds: [embed]
@@ -42,19 +43,16 @@ export default class SettingsCommand extends Command {
             if (key in guildSettings) {
                 let data;
                 if (args[0] === "set") {
-                    if (key === "quotes_channel") {
+                    if (key.endsWith("channel")) {
                         if (!message.mentions.channels.first()) return message.channel.send("Ну ты канал то укажи текстовый")
-                        data = {
-                            quotes_channel: message.mentions.channels.first().id
-                        }
-                    } else if (key === "welcome_channel") {
-                        if (!message.mentions.channels.first()) return message.channel.send("Ну ты канал то укажи текстовый")
-                        data = {
-                            welcome_channel: message.mentions.channels.first().id
-                        }
+                        data = { [key.toLowerCase()]: message.mentions.channels.first().id }
                     } else {
-                        data = {
-                            [key.toLowerCase()]: args.splice(2).join(" ")
+                        const value = args.splice(2).join(" ")
+                        if (typeof guildSettings[key] === "number") {
+                            if (isNaN(Number(value))) return message.channel.send("Введи число")
+                            data = { [key.toLowerCase()]: Number(value) }
+                        } else {
+                            data = { [key.toLowerCase()]: value }
                         }
                     }
                     await prisma.guild.update({
