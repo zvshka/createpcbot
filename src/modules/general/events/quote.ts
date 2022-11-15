@@ -127,9 +127,7 @@ export default class QuoteEvent extends Event {
             files: [
               attachment
             ]
-          }).then(() => {
-            // console.log(`[LOG] ${message.author.tag} использовал цитату на сообщение ${message.content} пользователя ${name}`)
-          });
+          }).catch(e => {})
 
 
         } else {

@@ -44,6 +44,10 @@ export default class StarboardAdd extends Event {
         .addField('Souce:', `[Jump!](${reaction.message.url})`)
         .setTimestamp()
 
+      if (reactionCount > 3) embed.setColor("YELLOW")
+      if (reactionCount > 5) embed.setColor("ORANGE")
+      if (reactionCount > 7) embed.setColor("BLURPLE")
+
       const channel = <TextChannel>reaction.message.channel
 
       if (reaction.message.attachments.size > 0 && !channel.nsfw) {
@@ -53,7 +57,9 @@ export default class StarboardAdd extends Event {
       const newMessage = await starboard.send({
         content: `${reaction.emoji.toString()} ${reactionCount} <#${reaction.message.channelId}>`,
         embeds: [embed]
-      })
+      }).catch(e => {})
+
+      if (!newMessage) return
 
       await prisma.starredMessage.create({
         data: {
@@ -63,7 +69,7 @@ export default class StarboardAdd extends Event {
         }
       })
     } else {
-      const botMessage = await starboard.messages.fetch(messageInDatabase.botMessageId)
+      const botMessage = await starboard.messages.fetch(messageInDatabase.botMessageId).catch(e => {})
       if (!botMessage) return
       const embed = new MessageEmbed(botMessage.embeds[0])
       if (reactionCount > 3) embed.setColor("YELLOW")
@@ -72,7 +78,7 @@ export default class StarboardAdd extends Event {
       botMessage.edit({
         content: `${reaction.emoji.toString()} ${reactionCount} <#${reaction.message.channelId}>`,
         embeds: [embed]
-      })
+      }).catch(e => {})
     }
   }
 };

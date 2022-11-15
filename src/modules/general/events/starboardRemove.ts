@@ -34,7 +34,7 @@ export default class StarboardRemove extends Event {
     })
     if (!messageInDatabase) return
 
-    const botMessage = await starboard.messages.fetch(messageInDatabase.botMessageId)
+    const botMessage = await starboard.messages.fetch(messageInDatabase.botMessageId).catch(e => {})
     if (!botMessage) return
 
     const reactionCount = reaction.count - (reaction.users.cache.has(reaction.message.author.id) ? 1 : 0)
@@ -47,7 +47,7 @@ export default class StarboardRemove extends Event {
       botMessage.edit({
         content: `${reaction.emoji.toString()} ${reactionCount} <#${reaction.message.channelId}>`,
         embeds: [embed]
-      })
+      }).catch(e => {})
     } else {
       await prisma.starredMessage.delete({
         where: {
