@@ -17,20 +17,34 @@ model StarredMessage {
   starredMessageId String
   botMessageId     String
 
+//  stars Int?
+
   @@id([guildId, starredMessageId])
 }
 
+//model Member {
+//  id      String
+//  guild   Guild  @relation(fields: [guildId], references: [id])
+//  guildId String
+//
+//  stars_given    Int @default(0)
+//  stats_received Int @default(0)
+//
+//  @@id([guildId, id])
+//}
+
 model Guild {
-  id                String  @id
-  prefix            String  @default(".")
-  quotes_channel    String?
-  quotes_prefix     String? @default("\\")
-  welcome_channel   String?
+  id              String  @id
+  prefix          String  @default(".")
+  quotes_channel  String?
+  quotes_prefix   String? @default("\\")
+  welcome_channel String?
 
   starboard_channel String?
   starboard_emoji   String? @default("⭐")
-  starboard_count   Int @default(3)
+  starboard_count   Int     @default(3)
 
+//  members         Member[]
   welcomeImages   WelcomeImage[]
   answers         PingAnswer[]
   welcomeMessages WelcomeMessage[]
@@ -38,7 +52,6 @@ model Guild {
 }
 
 model WelcomeImage {
-
   id  Int    @id @default(autoincrement())
   url String
 
@@ -57,7 +70,6 @@ model WelcomeMessage {
 }
 
 model PingAnswer {
-
   id   Int    @id @default(autoincrement())
   text String
 

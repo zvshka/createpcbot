@@ -3,7 +3,7 @@ import { Client, Intents } from "discord.js";
 import { Handler } from "./handler";
 import dotenv from "dotenv"
 
-dotenv.config()
+dotenv.config({ path: path.join(__dirname, '.env') })
 
 const client = new Client({
   intents: [
