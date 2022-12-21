@@ -76,8 +76,10 @@ export default class QuoteEvent extends Event {
 
           if (message.attachments.size > 0) {
             const image = await loadImage(message.attachments.first().attachment as Buffer)
-            ctx.globalAlpha = 0.65;
             ctx.drawImage(image, 0, 0, width, height)
+            ctx.globalAlpha = 0.65;
+            ctx.fillStyle = `rgb(0, 0, 0)`
+            ctx.fillRect(0, 0, width, height)
             ctx.globalAlpha = 1
           } else {
             ctx.fillStyle = `rgb(0, 0, 0)`
@@ -171,8 +173,10 @@ export default class QuoteEvent extends Event {
 
         if (message.attachments.size > 0) {
           const image = await loadImage(message.attachments.first().attachment as Buffer)
-          ctx.globalAlpha = 0.65;
           ctx.drawImage(image, 0, 0, width, height)
+          ctx.globalAlpha = 0.35;
+          ctx.fillStyle = `rgb(0, 0, 0)`
+          ctx.fillRect(0, 0, width, height)
           ctx.globalAlpha = 1
         } else {
           ctx.fillStyle = `rgb(0, 0, 0)`
