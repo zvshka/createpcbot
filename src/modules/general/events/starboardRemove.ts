@@ -2,6 +2,7 @@ import { Event } from "../../../handler";
 import { MessageEmbed, MessageReaction, TextBasedChannel, TextChannel, User } from "discord.js";
 import prisma from "../../../lib/prisma";
 import fetchReaction from "../../../lib/utils";
+import { editEmbed } from '../../../lib/starboard';
 
 export default class StarboardRemove extends Event {
   constructor() {
@@ -40,14 +41,7 @@ export default class StarboardRemove extends Event {
     const reactionCount = reaction.count - (reaction.users.cache.has(reaction.message.author.id) ? 1 : 0)
 
     if (reactionCount >= guildSettings.starboard_count) {
-      const embed = new MessageEmbed(botMessage.embeds[0])
-      if (reactionCount > 3) embed.setColor("YELLOW")
-      if (reactionCount > 5) embed.setColor("ORANGE")
-      if (reactionCount > 7) embed.setColor("BLURPLE")
-      botMessage.edit({
-        content: `${reaction.emoji.toString()} ${reactionCount} <#${reaction.message.channelId}>`,
-        embeds: [embed]
-      }).catch(e => {})
+      await editEmbed({botMessage, reaction, reactionCount})
     } else {
       await prisma.starredMessage.delete({
         where: {

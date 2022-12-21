@@ -17,21 +17,8 @@ model StarredMessage {
   starredMessageId String
   botMessageId     String
 
-//  stars Int?
-
   @@id([guildId, starredMessageId])
 }
-
-//model Member {
-//  id      String
-//  guild   Guild  @relation(fields: [guildId], references: [id])
-//  guildId String
-//
-//  stars_given    Int @default(0)
-//  stats_received Int @default(0)
-//
-//  @@id([guildId, id])
-//}
 
 model Guild {
   id              String  @id
@@ -44,7 +31,6 @@ model Guild {
   starboard_emoji   String? @default("⭐")
   starboard_count   Int     @default(3)
 
-//  members         Member[]
   welcomeImages   WelcomeImage[]
   answers         PingAnswer[]
   welcomeMessages WelcomeMessage[]
