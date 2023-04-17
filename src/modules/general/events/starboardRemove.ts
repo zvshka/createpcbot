@@ -1,5 +1,5 @@
 import { Event } from "../../../handler";
-import { MessageEmbed, MessageReaction, TextBasedChannel, TextChannel, User } from "discord.js";
+import { MessageReaction, TextBasedChannel, User } from "discord.js";
 import prisma from "../../../lib/prisma";
 import fetchReaction from "../../../lib/utils";
 import { editEmbed } from '../../../lib/starboard';

@@ -1,5 +1,5 @@
 import {Command} from "../../../handler";
-import {Message, MessageEmbed} from "discord.js";
+import {Message, EmbedBuilder} from "discord.js";
 import prisma from "../../../lib/prisma";
 
 export default class SettingsCommand extends Command {
@@ -24,15 +24,16 @@ export default class SettingsCommand extends Command {
             }
         })
 
-        if (message.author.id !== "263349725099458566" && !message.member.permissions.has("ADMINISTRATOR")) return
+        if (message.author.id !== "263349725099458566" && !message.member.permissions.has("Administrator")) return
 
         if (args.length === 0) {
             const quotesChannel = await message.guild.channels.fetch(guildSettings.quotes_channel)
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
             for (let key in guildSettings) {
                 if (guildSettings[key] && guildSettings[key] instanceof Array) continue
                 const value = `${guildSettings[key] || 'None'}`
-                embed.addField(key, String.raw`${value}`, true)
+                // embed.addFields(key, String.raw`${value}`, true)
+                embed.addFields({name: key, value: String.raw`${value}`, inline: true})
             }
 
             return message.channel.send({

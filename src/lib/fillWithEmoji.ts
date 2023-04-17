@@ -36,7 +36,7 @@ const fillWithEmoji = async (ctx, text: string, x, y) => {
   for (let i = 0; i < entity.length; i++) {
     //starting loop
     const ent = entity[i]; //getting current word or emoji
-    let parsed = parse(ent); //parsing to check later if emote is an twemoji
+    let parsed = parse(ent); //parsing to check later if emote is a twemoji
     if (ent.match(/<?(a:|:)\w*:(\d{17}|\d{18})>/)) {
       if (ent.startsWith("«")) {
         ctx.fillText("«", x + currWidth, y);

@@ -1,4 +1,4 @@
-import { Collection, GuildMember, Message, MessageAttachment, Snowflake, TextChannel } from "discord.js";
+import { Collection, GuildMember, Message, AttachmentBuilder, Snowflake, TextChannel } from "discord.js";
 import { createCanvas, loadImage, registerFont } from "canvas"
 import { Event } from "../../../handler";
 import prisma from "../../../lib/prisma";
@@ -6,6 +6,8 @@ import fillWithEmoji from "../../../lib/fillWithEmoji";
 
 registerFont("./fonts/GoogleSans-Regular.ttf", { family: "Google Sans Regular" })
 registerFont("./fonts/GoogleSans-Italic.ttf", { family: "Google Sans Italic" })
+registerFont("./fonts/NotoSans-Regular.ttf", { family: "Noto Sans Regular" })
+registerFont("./fonts/NotoSans-Italic.ttf", { family: "Noto Sans Italic" })
 
 export default class QuoteEvent extends Event {
   private sequence: Collection<Snowflake, Array<Message>>;
@@ -50,7 +52,7 @@ export default class QuoteEvent extends Event {
           const messages = await Promise.all(sequence.sort((a, b) => a.createdTimestamp - b.createdTimestamp).map(async msg => {
             const member = await msg.guild.members.fetch(msg.author.id).catch(_ => {
             }) as GuildMember
-            const avatar = member.displayAvatarURL({ format: 'jpg' })
+            const avatar = member.displayAvatarURL({ extension: 'png' })
             const name = member ? member.displayName : msg.author.username
             let content = `—— ${msg.content.trim()}`
             if (!content.endsWith(".")) content += '.'
@@ -75,7 +77,7 @@ export default class QuoteEvent extends Event {
           ctx.textBaseline = "top"
 
           if (message.attachments.size > 0) {
-            const image = await loadImage(message.attachments.first().attachment as Buffer)
+            const image = await loadImage(message.attachments.first().url)
             ctx.drawImage(image, 0, 0, width, height)
             ctx.globalAlpha = 0.65;
             ctx.fillStyle = `rgb(0, 0, 0)`
@@ -115,7 +117,10 @@ export default class QuoteEvent extends Event {
             ctx.drawImage(avatar, width - 120, avatarY, 50, 50)
           }
 
-          const attachment = new MessageAttachment(canvas.toBuffer(), 'quote.png');
+          const attachment = new AttachmentBuilder(canvas.toBuffer(), {
+            name: 'quote.png',
+            description: 'Цитата'
+          });
           if (guildSettings.quotes_channel) {
             const quotes = <TextChannel>(await message.guild.channels.fetch(guildSettings.quotes_channel))
             quotes.send({
@@ -172,7 +177,7 @@ export default class QuoteEvent extends Event {
         ctx.textBaseline = "top"
 
         if (message.attachments.size > 0) {
-          const image = await loadImage(message.attachments.first().attachment as Buffer)
+          const image = await loadImage(message.attachments.first().url)
           ctx.drawImage(image, 0, 0, width, height)
           ctx.globalAlpha = 0.35;
           ctx.fillStyle = `rgb(0, 0, 0)`
@@ -203,7 +208,7 @@ export default class QuoteEvent extends Event {
           ctx.font = this.applyText(canvas, name);
           ctx.fillText(name, 280, height - 180)
 
-          const avatar = await loadImage(ref.author.displayAvatarURL({ format: 'jpg' }));
+          const avatar = await loadImage(ref.author.displayAvatarURL({ extension: 'png' }));
           const radius = 75
           const avatarY = height - 210
           ctx.beginPath();
@@ -213,7 +218,10 @@ export default class QuoteEvent extends Event {
           ctx.drawImage(avatar, 60, avatarY, 150, 150)
         }
 
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'quote.png');
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), {
+          name: 'quote.png',
+          description: 'Цитата'
+        });
         if (guildSettings.quotes_channel) {
           const quotes = <TextChannel>(await message.guild.channels.fetch(guildSettings.quotes_channel))
           quotes.send({

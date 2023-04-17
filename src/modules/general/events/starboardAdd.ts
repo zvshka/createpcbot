@@ -1,5 +1,5 @@
 import { Event } from "../../../handler";
-import { MessageEmbed, MessageReaction, TextBasedChannel, TextChannel, User } from "discord.js";
+import { EmbedBuilder, MessageReaction, TextBasedChannel, TextChannel, User } from "discord.js";
 
 import prisma from "../../../lib/prisma";
 import fetchReaction from "../../../lib/utils";
@@ -39,15 +39,21 @@ export default class StarboardAdd extends Event {
       }
     })
     if (!messageInDatabase) {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setAuthor({ name: reaction.message.author.username, iconURL: reaction.message.author.avatarURL() })
-        .setDescription(reaction.message.content)
-        .addField('Souce:', `[Jump!](${reaction.message.url})`)
+        // .addFields('Souce:', `[Jump!](${reaction.message.url})`)
+        .addFields([
+          {name: 'Souce:', value: `[Jump!](${reaction.message.url})`}
+        ])
         .setTimestamp()
 
-      if (reactionCount > 3) embed.setColor("YELLOW")
-      if (reactionCount > 5) embed.setColor("ORANGE")
-      if (reactionCount > 7) embed.setColor("BLURPLE")
+      if (reaction.message.content.length > 0) {
+        embed.setDescription(reaction.message.content)
+      }
+
+      if (reactionCount > 3) embed.setColor("Yellow")
+      if (reactionCount > 5) embed.setColor("Orange")
+      if (reactionCount > 7) embed.setColor("Blurple")
 
       const channel = <TextChannel>reaction.message.channel
 
