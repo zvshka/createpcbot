@@ -1,4 +1,4 @@
-import {Client} from "discord.js";
+import { Client, PermissionOverwrites, ChannelType, PermissionFlagsBits } from 'discord.js';
 
 import Event from "./Event"
 import Command from "./Command"
@@ -224,7 +224,12 @@ class Handler {
                 return;
             }
 
-            if (cmd.adminOnly && message.author.id !== "263349725099458566" && (message.channel.type === "DM" || !message.member.permissions.has("ADMINISTRATOR"))) {
+            if (cmd.adminOnly &&
+                message.author.id !== "263349725099458566" &&
+                (
+                  message.channel.type === ChannelType.DM ||
+                  !message.member.permissions.has(PermissionFlagsBits.Administrator))
+                ) {
                 return;
             }
 

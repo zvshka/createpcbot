@@ -1,12 +1,12 @@
 import {Event} from "../../../handler";
-import {GuildMember, Message, MessageEmbed} from "discord.js";
+import { GuildMember, EmbedBuilder, ChannelType, Events } from 'discord.js';
 
 import prisma from "../../../lib/prisma";
 import axios from "axios";
 
 export default class PingEvent extends Event {
     constructor() {
-        super('guildMemberAdd', 'guildMemberAdd');
+        super(Events.GuildMemberAdd, 'guildMemberAdd');
     }
 
     async run(client, member: GuildMember) {
@@ -23,11 +23,9 @@ export default class PingEvent extends Event {
         if (!guildSettings) return
         if (!guildSettings.welcome_channel) return
         const welcomeChannel = await member.guild.channels.fetch(guildSettings.welcome_channel)
-        if (!welcomeChannel || welcomeChannel.type !== "GUILD_TEXT") return
-        const welcomeEmbed = new MessageEmbed()
+        if (!welcomeChannel || welcomeChannel.type !== ChannelType.GuildText) return
+        const welcomeEmbed = new EmbedBuilder()
             .setTitle(member.guild.name)
-
-        console.log(guildSettings)
 
         if (guildSettings.welcomeImages.length >= 1) {
             // Тут рандомайз                          Целое          Рандом значение умножаем на кол-во элементов массива

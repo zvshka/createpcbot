@@ -1,5 +1,5 @@
 import {Event} from "../../../handler";
-import {Message} from "discord.js";
+import { Events, Message } from 'discord.js';
 
 // const answers = [
 //     "{user}, слушай, ты чето попутал",
@@ -14,24 +14,26 @@ import prisma from "../../../lib/prisma";
 
 export default class PingEvent extends Event {
     constructor() {
-        super('messageCreate', 'ping');
+        super(Events.MessageCreate, 'ping');
     }
 
     async run(client, message: Message) {
-        if (process.env.DEV) return
-        const guildSettings = await prisma.guild.findUnique({
-            where: {
-                id: message.guildId
-            },
-            include: {
-                answers: true
-            }
-        })
-        if (!guildSettings) return
-        if (guildSettings.answers.length === 0) return
-        const {text} = guildSettings.answers[Math.floor(Math.random() * guildSettings.answers.length)]
-        if (message.mentions.has(client.user.id)) {
-            return message.channel.send(text.replace("{user}", message.author.toString()))
-        }
+        // if (process.env.DEV) return
+        // const guildSettings = await prisma.guild.findUnique({
+        //     where: {
+        //         id: message.guildId
+        //     },
+        //     include: {
+        //         answers: true
+        //     }
+        // })
+        // if (!guildSettings) return
+        // if (guildSettings.answers.length === 0) return
+        // const {text} = guildSettings.answers[Math.floor(Math.random() * guildSettings.answers.length)]
+        // if (message.mentions.has(client.user.id)) {
+        //     if (message.channel.isSendable && 'send' in message.channel) {
+        //         return message.channel.send(text.replace("{user}", message.author.toString()))
+        //     }
+        // }
     }
 };

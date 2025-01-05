@@ -37,13 +37,14 @@ const fillWithEmoji = async (ctx, text: string, x, y) => {
     //starting loop
     const ent = entity[i]; //getting current word or emoji
     let parsed = parse(ent); //parsing to check later if emote is an twemoji
-    if (ent.match(/<?(a:|:)\w*:(\d{17}|\d{18})>/)) {
+    const regExToSearch = /<?(a:|:)\w*:(\d*)>/
+    if (ent.match(regExToSearch)) {
       if (ent.startsWith("«")) {
         ctx.fillText("«", x + currWidth, y);
         currWidth += ctx.measureText("«").width + fontSize / 5;
       }
       //checking if custom emote or not
-      let matched = ent.match(/<?(a:|:)\w*:(\d{17}|\d{18})>/);
+      let matched = ent.match(regExToSearch);
       let img = await loadImage(
         `https://cdn.discordapp.com/emojis/${matched[2]}.png`
       );
