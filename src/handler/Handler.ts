@@ -1,8 +1,8 @@
-import { Client, ChannelType, PermissionFlagsBits } from 'discord.js';
+import { ChannelType, Client, Events, Message, PermissionFlagsBits } from 'discord.js';
 
-import Event from './Event'
-import Command from './Command'
-import Utils from '../Utils'
+import Event from './Event';
+import Command from './Command';
+import Utils from '../Utils';
 import Feature from './Feature';
 import prisma from '../lib/prisma';
 
@@ -192,7 +192,8 @@ class Handler {
     }
 
     // Handle commands
-    this.client.on('messageCreate', async message => {
+    this.client.on(Events.MessageCreate, async (message: Message) => {
+      if (message.channel.type === ChannelType.GroupDM) return;
       const guildSettings = await prisma.guild.upsert({
         where: {
           id: message.guildId,
@@ -224,23 +225,18 @@ class Handler {
         return;
       }
 
-      if (cmd.adminOnly && message.author.id !== '263349725099458566' && (message.channel.type === ChannelType.DM || !message.member.permissions.has('Administrator'))) {
-        return;
+      if (cmd.adminOnly &&
+          message.author.id !== "263349725099458566" &&
+          (
+            message.channel.type === ChannelType.DM ||
+            !message.member.permissions.has(PermissionFlagsBits.Administrator))
+          ) {
+          return;
       }
-            if (cmd.adminOnly &&
-                message.author.id !== "263349725099458566" &&
-                (
-                  message.channel.type === ChannelType.DM ||
-                  !message.member.permissions.has(PermissionFlagsBits.Administrator))
-                ) {
-                return;
-            }
-
 
       if (cmd.guildOnly && !message.guild) {
         return;
       }
-
 
       try {
         await cmd.run(message, args);

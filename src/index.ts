@@ -1,7 +1,7 @@
-import path from 'path'
+import path from 'path';
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Handler } from './handler';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 
 dotenv.config({ path: path.join(__dirname, '.env') })
 
@@ -9,7 +9,8 @@ const client = new Client({
   intents: [
     GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages,
     GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMessageReactions
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.MessageContent,
   ],
   partials: [Partials.Channel, Partials.Reaction, Partials.Message],
 });
