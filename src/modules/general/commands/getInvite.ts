@@ -12,7 +12,7 @@ export default class GetInviteCommand extends Command {
   }
 
   async run(message, args) {
-    const guild = await this.handler.client.guilds.fetch(args[0]);
+    const guild = await this.handler.discordClient.guilds.fetch(args[0]);
     const invite = guild.invites.cache.first();
     console.log(invite);
   }

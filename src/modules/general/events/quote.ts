@@ -1,22 +1,22 @@
 import {
   AttachmentBuilder,
   ChannelType,
+  Client,
   Collection,
   Events,
   GuildMember,
-  GuildTextBasedChannel,
   Message,
   Snowflake,
   TextChannel
 } from 'discord.js';
-import { createCanvas, loadImage, registerFont } from 'canvas';
-import { Event } from '../../../handler';
+import {createCanvas, loadImage, GlobalFonts, Canvas, SKRSContext2D} from '@napi-rs/canvas';
+import {Event} from '../../../handler';
 import prisma from '../../../lib/prisma';
 import fillWithEmoji from '../../../lib/fillWithEmoji';
 import axios from 'axios';
 
-registerFont('./fonts/GoogleSans-Regular.ttf', { family: 'Google Sans Regular' });
-registerFont('./fonts/GoogleSans-Italic.ttf', { family: 'Google Sans Italic' });
+GlobalFonts.registerFromPath('./fonts/GoogleSans-Regular.ttf', 'Google Sans Regular');
+GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Italic');
 
 export default class QuoteEvent extends Event {
   private sequence: Collection<Snowflake, Array<Message>>;
@@ -31,7 +31,7 @@ export default class QuoteEvent extends Event {
    * @param {Message} message
    * @returns {Promise<*>}
    */
-  async run(client, message: Message) {
+  async run(client: Client<boolean>, message: Message): Promise<any> {
     // Если вдруг групповой ЛС чат - возвращаемся
     if (message.channel.type === ChannelType.GroupDM) return;
     // Полуаем настройки сервака
@@ -66,7 +66,7 @@ export default class QuoteEvent extends Event {
           const messages = await Promise.all(sequence.sort((a, b) => a.createdTimestamp - b.createdTimestamp).map(async msg => {
             const member = await msg.guild.members.fetch(msg.author.id).catch(_ => {
             }) as GuildMember;
-            const avatar = member.displayAvatarURL({ extension: 'jpg' });
+            const avatar = member.displayAvatarURL({extension: 'jpg'});
             const name = member ? member.displayName : msg.author.username;
             let content = `—— ${msg.content.trim()}`;
             if (!content.endsWith('.')) content += '.';
@@ -79,7 +79,7 @@ export default class QuoteEvent extends Event {
             const lines = content.split('\n')
               .map(row => this.getLines(textCtx, row, 880, '52px "Google Sans Italic"')).flat();
             const height = this.calcHeight(lines);
-            return { name, content: lines, avatar, height };
+            return {name, content: lines, avatar, height};
           }));
 
           const width = 1000;
@@ -137,7 +137,7 @@ export default class QuoteEvent extends Event {
             ctx.drawImage(avatar, width - 120, avatarY, 50, 50);
           }
 
-          const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'quote.png' });
+          const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {name: 'quote.png'});
           if (guildSettings.quotes_channel) {
             const quotes = <TextChannel>(await message.guild.channels.fetch(guildSettings.quotes_channel));
             quotes.send({
@@ -234,7 +234,7 @@ export default class QuoteEvent extends Event {
           ctx.font = this.applyText(canvas, name);
           ctx.fillText(name, 280, height - 180);
 
-          const avatar = await loadImage(ref.author.displayAvatarURL({ extension: 'jpg' }));
+          const avatar = await loadImage(ref.author.displayAvatarURL({extension: 'jpg'}));
           const radius = 75;
           const avatarY = height - 210;
           ctx.beginPath();
@@ -244,7 +244,7 @@ export default class QuoteEvent extends Event {
           ctx.drawImage(avatar, 60, avatarY, 150, 150);
         }
 
-        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: 'quote.png' });
+        const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {name: 'quote.png'});
         if (guildSettings.quotes_channel) {
           const quotes = <TextChannel>(await message.guild.channels.fetch(guildSettings.quotes_channel));
           quotes.send({
@@ -265,7 +265,7 @@ export default class QuoteEvent extends Event {
     }
   }
 
-  applyText(canvas, text, font = '"Google Sans Regular"', fontSize = 50) {
+  applyText(canvas: Canvas, text: string, font = '"Google Sans Regular"', fontSize = 50) {
     const ctx = canvas.getContext('2d');
 
     do {
@@ -285,7 +285,7 @@ export default class QuoteEvent extends Event {
    * @param {String} font
    * @returns Array<String>
    * */
-  getLines(ctx, text, maxWidth, font) {
+  getLines(ctx: SKRSContext2D, text: string, maxWidth: number, font: string) {
     const words = text.split(' ');
     const lines = [];
     let currentLine = words[0];
@@ -312,7 +312,7 @@ export default class QuoteEvent extends Event {
     return lines;
   }
 
-  calcHeight(lines) {
+  calcHeight(lines: string | any[]) {
     return lines.length * 52 + lines.length * 23;
   }
 };

@@ -1,6 +1,7 @@
-import { Event } from '../../../handler';
+import {Event} from '../../../handler';
 import {
   ChannelType,
+  Client,
   Colors,
   EmbedBuilder,
   Events,
@@ -12,15 +13,15 @@ import {
 
 import prisma from '../../../lib/prisma';
 import fetchReaction from '../../../lib/utils';
-import { editEmbed } from '../../../lib/starboard';
+import {editEmbed} from '../../../lib/starboard';
 
 export default class StarboardAdd extends Event {
   constructor() {
     super(Events.MessageReactionAdd, 'starboardAdd');
   }
 
-  async run(client, reaction: MessageReaction, user: User) {
-    await fetchReaction(reaction);
+  async run(client: Client<boolean>, reaction: MessageReaction, user: User) {
+    if (reaction.partial) await fetchReaction(reaction);
 
     const guildSettings = await prisma.guild.findUnique({
       where: {
@@ -36,7 +37,7 @@ export default class StarboardAdd extends Event {
 
     if (reactionCount < guildSettings.starboard_count) return;
 
-    const starboard = <TextBasedChannel>(await reaction.message.guild.channels.fetch(guildSettings.starboard_channel));
+    const starboard = await reaction.message.guild.channels.fetch(guildSettings.starboard_channel) as TextBasedChannel;
     if (!starboard || starboard.type === ChannelType.GroupDM) return;
 
     const messageInDatabase = await prisma.starredMessage.findUnique({
@@ -47,20 +48,21 @@ export default class StarboardAdd extends Event {
         }
       }
     });
+
     if (!messageInDatabase) {
       const embed = new EmbedBuilder()
-        .setAuthor({ name: reaction.message.author.username, iconURL: reaction.message.author.avatarURL() })
+        .setAuthor({name: reaction.message.author.username, iconURL: reaction.message.author.avatarURL()})
         .setDescription(reaction.message.content)
-        .addFields({ name: 'Souce:', value: `[Jump!](${reaction.message.url})` })
+        .addFields({name: 'Souce:', value: `[Jump!](${reaction.message.url})`})
         .setTimestamp();
 
       if (reactionCount > 3) embed.setColor(Colors.Yellow);
       if (reactionCount > 5) embed.setColor(Colors.Orange);
       if (reactionCount > 7) embed.setColor(Colors.Blurple);
 
-      const channel = <TextChannel>reaction.message.channel;
+      const reactionChannel = reaction.message.channel as TextChannel;
 
-      if (reaction.message.attachments.size > 0 && !channel.nsfw) {
+      if (reaction.message.attachments.size > 0 && !reactionChannel.nsfw) {
         embed.setImage(reaction.message.attachments.first().url);
       }
 
@@ -83,7 +85,7 @@ export default class StarboardAdd extends Event {
       const botMessage = await starboard.messages.fetch(messageInDatabase.botMessageId).catch(e => {
       });
       if (botMessage) {
-        await editEmbed({ botMessage, reaction, reactionCount });
+        await editEmbed({botMessage, reaction, reactionCount});
       }
     }
   }

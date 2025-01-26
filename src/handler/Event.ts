@@ -1,5 +1,6 @@
 import Toggleable from "./Toggleable"
 import {Client} from "discord.js";
+import TelegramBot from "node-telegram-bot-api";
 
 class Event extends Toggleable {
     public eventName: string;
@@ -10,18 +11,17 @@ class Event extends Toggleable {
      * @param {string} eventName - The name of the event
      * @param {string} name - Name
      */
-    constructor(eventName, name) {
+    constructor(eventName: string, name: string) {
         super();
 
         this.eventName = eventName;
         this.name = name
     }
 
-
     /**
      * @description Method that runs when the event is fired
      */
-    run(client?: Client, ...params:any[]) {
+    run(client?: Client | TelegramBot, ...params:any[]) {
         throw new Error('Event is missing run method');
     }
 }

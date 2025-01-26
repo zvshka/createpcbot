@@ -1,16 +1,20 @@
-import { ChannelType, Client, Events, Message, PermissionFlagsBits } from 'discord.js';
+import {ChannelType, Client, Events, Message, PermissionFlagsBits} from 'discord.js';
 
 import Event from './Event';
 import Command from './Command';
 import Utils from '../Utils';
 import Feature from './Feature';
 import prisma from '../lib/prisma';
+import TelegramBot from "node-telegram-bot-api";
+import {TelegramEvent} from "./TelegramEvent";
 
 class Handler {
-  public client: Client;
+  public discordClient: Client;
+  public telegramClient: TelegramBot;
   public features: Map<string, Feature>
   public commands: Map<string, Command>
   public events: Map<string, Event[]>
+  public telegramEvents: Map<string, TelegramEvent[]>
   public aliases: Map<string, Command>
   public prefix: string
   public directory: string
@@ -20,12 +24,14 @@ class Handler {
    * @description Create a new handler instance
    * @param {Client} client - The discord.js client
    */
-  constructor(client: Client) {
+  constructor(discordClient: Client, telegramClient: TelegramBot) {
     /**
      * The discord.js client
      * @type {Client}
      */
-    this.client = client;
+    this.discordClient = discordClient;
+
+    this.telegramClient = telegramClient;
 
     /**
      * A map of all features
@@ -50,6 +56,8 @@ class Handler {
      * @type {Map<string, Array<Event>>}
      */
     this.events = new Map();
+
+    this.telegramEvents = new Map();
   }
 
   /**
@@ -58,7 +66,11 @@ class Handler {
    * @param {object} dependencies - The dependencies of the modules
    * @returns {undefined}
    */
-  async load(directory, dependencies) {
+  async load(directory: string, dependencies: {
+    discordClient: Client<boolean>;
+    telegramClient: TelegramBot;
+    commandHandler: Handler;
+  }): Promise<void> {
     this.directory = directory;
     this.dependencies = dependencies;
 
@@ -89,12 +101,14 @@ class Handler {
       }
 
       if (Node.prototype instanceof Event) {
-        const loaded = Array.from(this.events.values()).some(events =>
+        const isTelegramEvent = Node.prototype instanceof TelegramEvent;
+        const events = isTelegramEvent ? this.telegramEvents : this.events;
+        const loaded = Array.from(events.values()).some(events =>
           events.some(event => event instanceof Node),
         );
 
         if (!loaded) {
-          this.loadEvent(new Node(dependencies));
+          this.loadEvent(new Node(dependencies), isTelegramEvent);
         }
       }
     }
@@ -107,7 +121,7 @@ class Handler {
    * @description Load a feature and it's commands
    * @param {Feature} feature - The feature that needs to be loaded
    */
-  async loadFeature(feature) {
+  async loadFeature(feature: Feature) {
     if (this.features.has(feature.name)) {
       throw new Error(
         `Can't load Feature, the name '${feature.name}' is already used`,
@@ -119,11 +133,11 @@ class Handler {
     this.features.set(feature.name, feature);
     console.log(`[LOADING] Загружаю Feature: ${feature.name}`)
 
-    feature.commands.forEach(command => {
+    feature.commands.forEach((command: Command) => {
       this.loadCommand(command);
     });
 
-    feature.events.forEach(event => {
+    feature.events.forEach((event: Event) => {
       this.loadEvent(event);
     });
   }
@@ -132,7 +146,7 @@ class Handler {
    * @description Load a command
    * @param {Command} command - The command that needs to be loaded
    */
-  loadCommand(command) {
+  loadCommand(command: Command) {
     // Command name might be in use or name might already be an existing alias
     if (this.commands.has(command.name) || this.aliases.has(command.name)) {
       throw new Error(
@@ -143,7 +157,7 @@ class Handler {
     this.commands.set(command.name, command);
     console.log(`[LOADING] Загружаю команду: ${command.name}`)
 
-    command.aliases.forEach(alias => {
+    command.aliases.forEach((alias: string) => {
       // Alias might already be a command or might already be in use
       if (this.commands.has(alias) || this.aliases.has(alias)) {
         throw new Error(
@@ -158,12 +172,15 @@ class Handler {
   /**
    * @description Load an event
    * @param {Event} event - The event that needs to be loaded
+   * @param isTelegramEvent
    */
-  loadEvent(event) {
-    const events = this.events.get(event.eventName) || [];
+  loadEvent(event: Event | TelegramEvent, isTelegramEvent: boolean = false) {
+    let eventsMap = !isTelegramEvent ? this.events : this.telegramEvents;
+
+    const events = eventsMap.get(event.eventName) || [];
     events.push(event);
 
-    this.events.set(event.eventName, events);
+    eventsMap.set(event.eventName, events);
     console.log(`[LOADING] Загружаю ивент: ${event.name}`)
   }
 
@@ -173,26 +190,36 @@ class Handler {
   register() {
     // Handle events
     for (const [name, handlers] of this.events) {
-      this.client.on(name, (...params) => {
+      this.discordClient.on(name, (...params) => {
         for (const handler of handlers) {
           // Run event if enabled
           if (handler.isEnabled) {
             try {
-              handler.run(this.client, ...params);
+              handler.run(this.discordClient, ...params, this.telegramClient);
             } catch (err) {
               console.log(`[ERROR] ${err}`)
-              // this.client.guilds.fetch("725786415438364692").then(guild => {
-              //     const channel = guild.channels.cache.get("836263032702107749")
-              //     channel.send(`Плохой человек создал ошибку, чекни <@!263349725099458566> \`\`\`${err.stack}\`\`\``)
-              // })
             }
           }
         }
       });
     }
 
+    for (const [name, handlers] of this.telegramEvents) {
+      this.telegramClient.on(name, (...params) => {
+        for (const handler of handlers) {
+          if (handler.isEnabled) {
+            try {
+              handler.run(this.telegramClient, this.discordClient, ...params);
+            } catch (err) {
+              console.log(`[ERROR] ${err}`)
+            }
+          }
+        }
+      })
+    }
+
     // Handle commands
-    this.client.on(Events.MessageCreate, async (message: Message) => {
+    this.discordClient.on(Events.MessageCreate, async (message: Message) => {
       if (message.channel.type === ChannelType.GroupDM) return;
       const guildSettings = await prisma.guild.upsert({
         where: {
@@ -226,12 +253,12 @@ class Handler {
       }
 
       if (cmd.adminOnly &&
-          message.author.id !== "263349725099458566" &&
-          (
-            message.channel.type === ChannelType.DM ||
-            !message.member.permissions.has(PermissionFlagsBits.Administrator))
-          ) {
-          return;
+        message.author.id !== "263349725099458566" &&
+        (
+          message.channel.type === ChannelType.DM ||
+          !message.member.permissions.has(PermissionFlagsBits.Administrator))
+      ) {
+        return;
       }
 
       if (cmd.guildOnly && !message.guild) {

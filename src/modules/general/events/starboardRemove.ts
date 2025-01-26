@@ -1,15 +1,15 @@
 import { Event } from '../../../handler';
-import { Events, MessageReaction, TextBasedChannel, User } from 'discord.js';
+import { Client, Events, MessageReaction, TextBasedChannel, User} from 'discord.js';
 import prisma from '../../../lib/prisma';
 import fetchReaction from '../../../lib/utils';
-import { editEmbed } from '../../../lib/starboard';
+import {editEmbed} from '../../../lib/starboard';
 
 export default class StarboardRemove extends Event {
   constructor() {
     super(Events.MessageReactionRemove, 'starboardRemove');
   }
 
-  async run(client, reaction: MessageReaction, user: User) {
+  async run(client: Client<boolean>, reaction: MessageReaction, user: User) {
     await fetchReaction(reaction);
 
     const guildSettings = await prisma.guild.findUnique({

@@ -2,10 +2,11 @@ import path from 'path';
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { Handler } from './handler';
 import dotenv from 'dotenv';
+import TelegramBot from 'node-telegram-bot-api'
 
 dotenv.config({ path: path.join(__dirname, '.env') })
 
-const client = new Client({
+const discordClient = new Client({
   intents: [
     GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages,
     GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages,
@@ -14,13 +15,19 @@ const client = new Client({
   ],
   partials: [Partials.Channel, Partials.Reaction, Partials.Message],
 });
-const handler = new Handler(client);
+
+const telegramClient = new TelegramBot(process.env.TELEGRAM_TOKEN, {
+  polling: true,
+});
+
+const handler = new Handler(discordClient, telegramClient);
 
 handler.load(path.join(__dirname, './modules'), {
-  client,
+  discordClient,
+  telegramClient,
   commandHandler: handler,
 }).then(res => {
-  client.login(process.env.TOKEN).then(r => {
+  discordClient.login(process.env.TOKEN).then(r => {
     console.log("[DONE] Загружен!")
   });
 });

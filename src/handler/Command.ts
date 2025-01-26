@@ -16,6 +16,7 @@ class Command extends Toggleable {
     public usage: string;
     public guildOnly: boolean;
     public adminOnly: boolean;
+    public type: 'telegram' | 'discord' = 'discord';
     /**
      * @description Create a new command
      * @param {string} name - The name of the command
