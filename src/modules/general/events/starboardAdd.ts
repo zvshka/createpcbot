@@ -52,9 +52,12 @@ export default class StarboardAdd extends Event {
     if (!messageInDatabase) {
       const embed = new EmbedBuilder()
         .setAuthor({name: reaction.message.author.username, iconURL: reaction.message.author.avatarURL()})
-        .setDescription(reaction.message.content)
         .addFields({name: 'Souce:', value: `[Jump!](${reaction.message.url})`})
         .setTimestamp();
+
+      if (reaction.message.content && reaction.message.content.length > 0) {
+        embed.setDescription(reaction.message.content)
+      }
 
       if (reactionCount > 3) embed.setColor(Colors.Yellow);
       if (reactionCount > 5) embed.setColor(Colors.Orange);
