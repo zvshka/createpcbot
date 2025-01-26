@@ -17,7 +17,7 @@ const discordClient = new Client({
 });
 
 const telegramClient = new TelegramBot(process.env.TELEGRAM_TOKEN, {
-  polling: true,
+  polling: false,
 });
 
 const handler = new Handler(discordClient, telegramClient);

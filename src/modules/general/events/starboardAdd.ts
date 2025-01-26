@@ -73,6 +73,8 @@ export default class StarboardAdd extends Event {
         content: `${reaction.emoji.toString()} **${reactionCount}** <#${reaction.message.channelId}>`,
         embeds: [embed]
       }).catch(e => {
+        console.log("[ERROR] Произошла ошибка при отправке сообщения в канал!")
+        console.log(e);
       });
 
       if (!starboardMessage) return;
