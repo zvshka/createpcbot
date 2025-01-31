@@ -1,5 +1,5 @@
 import { loadImage } from "@napi-rs/canvas";
-import { parse } from "twemoji-parser";
+import { parse } from "@twemoji/parser";
 const splitEmoji = (string: string) => {
   let toReturn = ""
   for (let symbol of string) {
