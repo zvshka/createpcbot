@@ -18,10 +18,11 @@ import axios from 'axios';
 // GlobalFonts.registerFromPath('./fonts/GoogleSans-Regular.ttf', 'Google Sans Regular');
 // GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Italic');
 GlobalFonts.loadFontsFromDir('./fonts');
-console.log(GlobalFonts.families)
+console.log(GlobalFonts.families.map(family => `${family.family} ${family.styles.join(" ")}`));
 
 const mainTextSize = 52
 const secondaryTextSize = 42
+const globalMargin = 25;
 
 type CanvasTextBaseline = "alphabetic" | "bottom" | "hanging" | "ideographic" | "middle" | "top"
 
@@ -92,7 +93,6 @@ export default class QuoteEvent extends Event {
 
     // Фон
     ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'top';
-    console.log(ctx.textBaseline)
 
     if (message.attachments.size > 0) {
       const attachment = message.attachments.first();
@@ -114,7 +114,7 @@ export default class QuoteEvent extends Event {
 
     ctx.fillStyle = '#ffffff';
     ctx.font = `${mainTextSize}px Google Sans Regular`;
-    ctx.fillText('Цитаты великих людей', 215, 35);
+    ctx.fillText('Цитаты великих людей', 215, 35 + globalMargin);
 
     ctx.font = `${mainTextSize}px "Google Sans Italic"`;
     for (let i = 0; i < lines.length; i++) {
