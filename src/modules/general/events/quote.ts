@@ -82,7 +82,7 @@ export default class QuoteEvent extends Event {
 
     const text = '«' + content + '».';
     const lines = text.split('\n')
-      .map(row => this.getLines(textCtx, row, 880, `${mainTextSize}px "Google Sans Italic"`)).flat();
+      .map(row => this.getLines(textCtx, row, 880, `${mainTextSize}px Google Sans Italic`)).flat();
 
     const width = 1000;
     const height = 155 + this.calcHeight(lines) + 270;
@@ -113,7 +113,7 @@ export default class QuoteEvent extends Event {
     }
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = `${mainTextSize}px "Google Sans Regular"`;
+    ctx.font = `${mainTextSize}px Google Sans Regular`;
     ctx.fillText('Цитаты великих людей', 215, 35);
 
     ctx.font = `${mainTextSize}px "Google Sans Italic"`;
@@ -123,7 +123,7 @@ export default class QuoteEvent extends Event {
       await fillWithEmoji(ctx, line.length > 0 ? line : ' ', 60, y);
     }
 
-    ctx.font = `${secondaryTextSize}px "Google Sans Regular"`;
+    ctx.font = `${secondaryTextSize}px Google Sans Regular`;
     ctx.fillText('©', 250, height - 180);
     ctx.font = this.applyText(canvas, name);
     ctx.fillText(name, 280, height - 180);
@@ -155,7 +155,7 @@ export default class QuoteEvent extends Event {
     });
   }
 
-  applyText(canvas: Canvas, text: string, font = '"Google Sans Regular"', fontSize = mainTextSize - 2) {
+  applyText(canvas: Canvas, text: string, font = 'Google Sans Regular', fontSize = mainTextSize - 2) {
     const ctx = canvas.getContext('2d');
     ctx.textBaseline = 'top';
 
