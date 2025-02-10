@@ -89,7 +89,7 @@ export default class QuoteEvent extends Event {
     const ctx = canvas.getContext('2d');
 
     // Фон
-    ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'hanging';
+    ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'top';
     console.log(ctx.textBaseline)
 
     if (message.attachments.size > 0) {
@@ -155,7 +155,7 @@ export default class QuoteEvent extends Event {
 
   applyText(canvas: Canvas, text: string, font = '"Google Sans Regular"', fontSize = mainTextSize - 2) {
     const ctx = canvas.getContext('2d');
-    ctx.textBaseline = 'hanging';
+    ctx.textBaseline = 'top';
 
     do {
       // Assign the font to the context and decrement it, so it can be measured again
