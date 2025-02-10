@@ -21,6 +21,10 @@ GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Itali
 const mainTextSize = 52
 const secondaryTextSize = 42
 
+type CanvasTextBaseline = "alphabetic" | "bottom" | "hanging" | "ideographic" | "middle" | "top"
+
+const validBaselines: CanvasTextBaseline[] = ["alphabetic", "bottom", "hanging", "ideographic", "middle", "top"];
+
 export default class QuoteEvent extends Event {
   private sequence: Collection<Snowflake, Array<Message>>;
 
@@ -85,7 +89,7 @@ export default class QuoteEvent extends Event {
     const ctx = canvas.getContext('2d');
 
     // Фон
-    ctx.textBaseline = 'top';
+    ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'top';
 
     if (message.attachments.size > 0) {
       const attachment = message.attachments.first();
