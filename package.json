@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/zvshka/createpcbot#readme",
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.65",
+    "@napi-rs/canvas": "^0.1.67",
     "@prisma/client": "^6.1.0",
     "axios": "^1.7.4",
     "common-tags": "^1.8.2",

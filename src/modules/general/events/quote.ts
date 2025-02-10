@@ -50,6 +50,7 @@ export default class QuoteEvent extends Event {
     });
 
     const args = message.content.split(' ');
+    if (args.length > 1) console.log(args)
     const isTriggered = args[0] === (guildSettings?.quotes_prefix || '\\');
 
     if (!isTriggered) return;
@@ -90,6 +91,7 @@ export default class QuoteEvent extends Event {
 
     // Фон
     ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'top';
+    console.log(ctx.textBaseline)
 
     if (message.attachments.size > 0) {
       const attachment = message.attachments.first();
