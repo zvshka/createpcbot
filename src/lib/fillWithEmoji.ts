@@ -17,7 +17,7 @@ const fillWithEmoji = async (ctx, text: string, x, y) => {
   if (!x) throw new Error(`(discord-emoji-canvas) No x axis was provided`);
   if (!y) throw new Error(`(discord-emoji-canvas) No y axis was provided`);
   // starting function from here
-  let emojiPercent1 = 1;
+  let emojiPercent1 = 0.1;
   let emojiPercent2 = 1;
   let fontSize = parseInt(ctx.font);
   let emojiSideMargin = fontSize * emojiPercent1;

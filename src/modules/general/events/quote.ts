@@ -48,6 +48,8 @@ export default class QuoteEvent extends Event {
     const args = message.content.split(' ');
     const isTriggered = args[0] === (guildSettings?.quotes_prefix || '\\');
 
+    if (!isTriggered) return;
+
     // Получаем полную информацию о сообщении.
     const ref = await message.fetchReference().catch(e => {
     });
