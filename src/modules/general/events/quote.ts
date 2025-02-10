@@ -18,6 +18,7 @@ import axios from 'axios';
 // GlobalFonts.registerFromPath('./fonts/GoogleSans-Regular.ttf', 'Google Sans Regular');
 // GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Italic');
 GlobalFonts.loadFontsFromDir('./fonts');
+console.log(GlobalFonts.families)
 
 const mainTextSize = 52
 const secondaryTextSize = 42
