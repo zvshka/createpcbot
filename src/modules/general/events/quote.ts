@@ -15,8 +15,9 @@ import prisma from '../../../lib/prisma';
 import fillWithEmoji from '../../../lib/fillWithEmoji';
 import axios from 'axios';
 
-GlobalFonts.registerFromPath('./fonts/GoogleSans-Regular.ttf', 'Google Sans Regular');
-GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Italic');
+// GlobalFonts.registerFromPath('./fonts/GoogleSans-Regular.ttf', 'Google Sans Regular');
+// GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Italic');
+GlobalFonts.registerFromPath('./fonts');
 
 const mainTextSize = 52
 const secondaryTextSize = 42
