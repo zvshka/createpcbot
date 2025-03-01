@@ -17,8 +17,6 @@ import axios from 'axios';
 
 GlobalFonts.registerFromPath('./fonts/GoogleSans-Regular.ttf', 'Google Sans Regular');
 GlobalFonts.registerFromPath('./fonts/GoogleSans-Italic.ttf', 'Google Sans Italic');
-// GlobalFonts.loadFontsFromDir('./fonts');
-console.log(GlobalFonts.families.map(family => `${family.family} ${family.styles.map(s => s.style).join(', ')}`));
 
 const mainTextSize = 52
 const secondaryTextSize = 42
@@ -120,13 +118,13 @@ export default class QuoteEvent extends Event {
     for (let i = 0; i < lines.length; i++) {
       const y = 155 + i * mainTextSize + i * 23;
       const line = lines[i];
-      await fillWithEmoji(ctx, line.length > 0 ? line : ' ', 60, y);
+      await fillWithEmoji(ctx, line.length > 0 ? line : ' ', 60, y + globalMargin);
     }
 
     ctx.font = `${secondaryTextSize}px Google Sans Regular`;
-    ctx.fillText('©', 250, height - 180);
+    ctx.fillText('©', 250, height - 180 + globalMargin);
     ctx.font = this.applyText(canvas, name);
-    ctx.fillText(name, 280, height - 180);
+    ctx.fillText(name, 280, height - 180 + globalMargin);
 
     const avatar = await loadImage(ref.author.displayAvatarURL({ extension: 'jpg' }));
     const radius = 75;

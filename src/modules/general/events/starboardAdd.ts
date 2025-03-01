@@ -1,4 +1,4 @@
-import {Event} from '../../../handler';
+import { Event } from '../../../handler';
 import {
   ChannelType,
   Client,
@@ -13,7 +13,7 @@ import {
 
 import prisma from '../../../lib/prisma';
 import fetchReaction from '../../../lib/utils';
-import {editEmbed} from '../../../lib/starboard';
+import { editEmbed } from '../../../lib/starboard';
 
 export default class StarboardAdd extends Event {
   constructor() {
@@ -51,8 +51,8 @@ export default class StarboardAdd extends Event {
 
     if (!messageInDatabase) {
       const embed = new EmbedBuilder()
-        .setAuthor({name: reaction.message.author.username, iconURL: reaction.message.author.avatarURL()})
-        .addFields({name: 'Souce:', value: `[Jump!](${reaction.message.url})`})
+        .setAuthor({ name: reaction.message.author.username, iconURL: reaction.message.author.avatarURL() })
+        .addFields({ name: 'Souce:', value: `[Jump!](${reaction.message.url})` })
         .setTimestamp();
 
       if (reaction.message.content && reaction.message.content.length > 0) {
@@ -65,8 +65,10 @@ export default class StarboardAdd extends Event {
 
       const reactionChannel = reaction.message.channel as TextChannel;
 
-      if (reaction.message.attachments.size > 0 && !reactionChannel.nsfw) {
-        embed.setImage(reaction.message.attachments.first().url);
+      if (!reactionChannel.nsfw) {
+        if (reaction.message.attachments.size > 0) {
+          embed.setImage(reaction.message.attachments.first().url);
+        }
       }
 
       const starboardMessage = await starboard.send({
@@ -90,7 +92,7 @@ export default class StarboardAdd extends Event {
       const botMessage = await starboard.messages.fetch(messageInDatabase.botMessageId).catch(e => {
       });
       if (botMessage) {
-        await editEmbed({botMessage, reaction, reactionCount});
+        await editEmbed({ botMessage, reaction, reactionCount });
       }
     }
   }
