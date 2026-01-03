@@ -23,7 +23,7 @@
     "axios": "^1.7.4",
     "common-tags": "^1.8.2",
     "discord-api-types": "^0.37.115",
-    "discord.js": "^14.17.2",
+    "discord.js": "14.17.2",
     "dotenv": "^16.4.7",
     "module-from-string": "^3.1.4",
     "moment": "^2.29.4",
