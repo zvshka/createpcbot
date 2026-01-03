@@ -1,6 +1,6 @@
-import Event from "../../../handler/Event";
+import DiscordEvent from "../../../handler/DiscordEvent";
 
-export default class ReadyEvent extends Event {
+export default class ReadyEvent extends DiscordEvent {
     constructor() {
         super('ready', 'ready');
     }

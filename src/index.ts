@@ -4,7 +4,7 @@ import { Handler } from './handler';
 import dotenv from 'dotenv';
 import TelegramBot from 'node-telegram-bot-api'
 
-dotenv.config({ path: path.join(__dirname, '.env') })
+dotenv.config()
 
 const discordClient = new Client({
   intents: [

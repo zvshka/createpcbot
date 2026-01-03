@@ -1,6 +1,6 @@
 import {ChannelType, Client, Events, Message, PermissionFlagsBits} from 'discord.js';
 
-import Event from './Event';
+import DiscordEvent from './DiscordEvent';
 import Command from './Command';
 import Utils from '../Utils';
 import Feature from './Feature';
@@ -13,7 +13,7 @@ class Handler {
   public telegramClient: TelegramBot;
   public features: Map<string, Feature>
   public commands: Map<string, Command>
-  public events: Map<string, Event[]>
+  public events: Map<string, DiscordEvent[]>
   public telegramEvents: Map<string, TelegramEvent[]>
   public aliases: Map<string, Command>
   public prefix: string
@@ -53,7 +53,7 @@ class Handler {
 
     /**
      * A map containing all the events, mapped by event name
-     * @type {Map<string, Array<Event>>}
+     * @type {Map<string, Array<DiscordEvent>>}
      */
     this.events = new Map();
 
@@ -100,7 +100,7 @@ class Handler {
         }
       }
 
-      if (Node.prototype instanceof Event) {
+      if (Node.prototype instanceof DiscordEvent) {
         const isTelegramEvent = Node.prototype instanceof TelegramEvent;
         const events = isTelegramEvent ? this.telegramEvents : this.events;
         const loaded = Array.from(events.values()).some(events =>
@@ -137,7 +137,7 @@ class Handler {
       this.loadCommand(command);
     });
 
-    feature.events.forEach((event: Event) => {
+    feature.events.forEach((event: DiscordEvent) => {
       this.loadEvent(event);
     });
   }
@@ -171,10 +171,10 @@ class Handler {
 
   /**
    * @description Load an event
-   * @param {Event} event - The event that needs to be loaded
+   * @param {DiscordEvent} event - The event that needs to be loaded
    * @param isTelegramEvent
    */
-  loadEvent(event: Event | TelegramEvent, isTelegramEvent: boolean = false) {
+  loadEvent(event: DiscordEvent | TelegramEvent, isTelegramEvent: boolean = false) {
     let eventsMap = !isTelegramEvent ? this.events : this.telegramEvents;
 
     const events = eventsMap.get(event.eventName) || [];

@@ -1,4 +1,4 @@
-import {Event} from "../../../handler";
+import {DiscordEvent} from "../../../handler";
 import { Events, Message } from 'discord.js';
 
 // const answers = [
@@ -12,7 +12,7 @@ import { Events, Message } from 'discord.js';
 
 import prisma from "../../../lib/prisma";
 
-export default class PingEvent extends Event {
+export default class PingEvent extends DiscordEvent {
     constructor() {
         super(Events.MessageCreate, 'ping');
     }

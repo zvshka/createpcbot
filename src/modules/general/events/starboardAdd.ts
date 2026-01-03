@@ -1,4 +1,4 @@
-import { Event } from '../../../handler';
+import { DiscordEvent } from '../../../handler';
 import {
   ChannelType,
   Client,
@@ -15,7 +15,7 @@ import prisma from '../../../lib/prisma';
 import fetchReaction from '../../../lib/utils';
 import { editEmbed } from '../../../lib/starboard';
 
-export default class StarboardAdd extends Event {
+export default class StarboardAdd extends DiscordEvent {
   constructor() {
     super(Events.MessageReactionAdd, 'starboardAdd');
   }

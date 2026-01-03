@@ -10,7 +10,7 @@ import {
   TextChannel
 } from 'discord.js';
 import { createCanvas, loadImage, GlobalFonts, Canvas, SKRSContext2D } from '@napi-rs/canvas';
-import { Event } from '../../../handler';
+import { DiscordEvent } from '../../../handler';
 import prisma from '../../../lib/prisma';
 import fillWithEmoji from '../../../lib/fillWithEmoji';
 import axios from 'axios';
@@ -26,20 +26,20 @@ type CanvasTextBaseline = "alphabetic" | "bottom" | "hanging" | "ideographic" | 
 
 const validBaselines: CanvasTextBaseline[] = ["alphabetic", "bottom", "hanging", "ideographic", "middle", "top"];
 
-export default class QuoteEvent extends Event {
+export default class QuoteEvent extends DiscordEvent {
   private sequence: Collection<Snowflake, Array<Message>>;
 
   constructor() {
     super(Events.MessageCreate, 'quotes');
   }
 
-  async run(client: Client<boolean>, message: Message<boolean>): Promise<any> {
+  async run(client: Client<boolean>, message: Message<boolean>) {
     // Если вдруг групповой ЛС чат - возвращаемся
     if (message.channel.type === ChannelType.GroupDM) return;
 
     const messageChannel = message.channel as TextChannel;
 
-    // Полуаем настройки сервака
+    // Получаем настройки сервера
     const guildSettings = await prisma.guild.upsert({
       where: {
         id: message.guildId
@@ -68,9 +68,9 @@ export default class QuoteEvent extends Event {
     const textCtx = textCanvas.getContext('2d');
 
     // Получаем полные данные человека, который отправил цитируемое сообщение.
-    const member = await message.guild.members.fetch(ref.author.id).catch(_ => {
-    });
-    const name = member ? member.displayName : ref.author.username;
+    // const member = await message.guild.members.fetch(ref.author.id).catch(_ => {
+    // });
+    const name = ref.author.username;
 
     let content = ref.content.trim();
     for (let [id, user] of ref.mentions.users) {
@@ -90,7 +90,8 @@ export default class QuoteEvent extends Event {
     const ctx = canvas.getContext('2d');
 
     // Фон
-    ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'top';
+    // ctx.textBaseline = args[1] in validBaselines ? args[1] as CanvasTextBaseline : 'top';
+    ctx.textBaseline = 'top';
 
     if (message.attachments.size > 0) {
       const attachment = message.attachments.first();

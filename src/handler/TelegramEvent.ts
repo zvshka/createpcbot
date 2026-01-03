@@ -1,9 +1,9 @@
 import { Client } from "discord.js";
-import Event from "./Event";
+import DiscordEvent from "./DiscordEvent";
 import TelegramBot from "node-telegram-bot-api";
 
 
-export class TelegramEvent extends Event {
+export class TelegramEvent extends DiscordEvent {
 
   constructor(eventType: string, eventName: string) {
     super(eventType, eventName);

@@ -1,10 +1,10 @@
-import Event from "./Event"
+import DiscordEvent from "./DiscordEvent"
 import Command from "./Command"
 import Toggleable from "./Toggleable"
 class Feature extends Toggleable {
     public commands: Command[];
     public name: string;
-    public events: Event[];
+    public events: DiscordEvent[];
     /**
      * @description Create a new Feature
      * @param {string} name - The name of this Feature
@@ -30,7 +30,7 @@ class Feature extends Toggleable {
 
         /**
          * All events that belong to this Feature
-         * @type {Array<Event>}
+         * @type {Array<DiscordEvent>}
          */
         this.events = [];
     }
@@ -53,10 +53,10 @@ class Feature extends Toggleable {
 
     /**
      * @description Register a new event
-     * @param {Event} event - The event that needs to be registered
+     * @param {DiscordEvent} event - The event that needs to be registered
      */
     registerEvent(event) {
-        if (!(event instanceof Event)) {
+        if (!(event instanceof DiscordEvent)) {
             throw new TypeError("Can't register event, it does not extend Event");
         }
 

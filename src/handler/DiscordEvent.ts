@@ -2,7 +2,7 @@ import Toggleable from "./Toggleable"
 import {Client} from "discord.js";
 import TelegramBot from "node-telegram-bot-api";
 
-class Event extends Toggleable {
+class DiscordEvent extends Toggleable {
     public eventName: string;
     public name: string;
 
@@ -26,4 +26,4 @@ class Event extends Toggleable {
     }
 }
 
-export default Event
+export default DiscordEvent

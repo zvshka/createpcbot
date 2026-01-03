@@ -1,10 +1,10 @@
-import { Event } from '../../../handler';
-import { Client, Events, MessageReaction, TextBasedChannel, User} from 'discord.js';
+import { DiscordEvent } from '../../../handler';
+import { Client, Events, MessageReaction, TextBasedChannel, User } from 'discord.js';
 import prisma from '../../../lib/prisma';
 import fetchReaction from '../../../lib/utils';
-import {editEmbed} from '../../../lib/starboard';
+import { editEmbed } from '../../../lib/starboard';
 
-export default class StarboardRemove extends Event {
+export default class StarboardRemove extends DiscordEvent {
   constructor() {
     super(Events.MessageReactionRemove, 'starboardRemove');
   }
@@ -43,7 +43,7 @@ export default class StarboardRemove extends Event {
     const reactionCount = reaction.count - (reaction.users.cache.has(reaction.message.author.id) ? 1 : 0);
 
     if (reactionCount >= guildSettings.starboard_count) {
-      await editEmbed({ botMessage, reaction, reactionCount });
+      await editEmbed({botMessage, reaction, reactionCount});
     } else {
       await prisma.starredMessage.delete({
         where: {

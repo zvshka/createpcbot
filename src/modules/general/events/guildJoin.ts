@@ -1,10 +1,10 @@
-import {Event} from "../../../handler";
+import {DiscordEvent} from "../../../handler";
 import { GuildMember, EmbedBuilder, ChannelType, Events } from 'discord.js';
 
 import prisma from "../../../lib/prisma";
 import axios from "axios";
 
-export default class PingEvent extends Event {
+export default class PingEvent extends DiscordEvent {
     constructor() {
         super(Events.GuildMemberAdd, 'guildMemberAdd');
     }
